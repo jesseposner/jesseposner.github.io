@@ -1,0 +1,81 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    background-color: #151515;
+}
+
+canvas {
+    display: block;
+    margin: auto;
+
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+h1, h3 {
+  text-align: center;
+  color: white;
+  margin-bottom: 0px;
+  padding-bottom: 20px;
+  padding-top: 0px;
+  margin-top: 0px;
+}
+
+#game-over, #game-over-overlay {
+  margin: auto;
+  width: 512px;
+  height: 600px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  display: none;
+}
+
+#game-over-overlay {
+  background-color: black;
+  opacity: .5;
+}
+
+#game-over {
+  height: 200px;
+  text-align: center;
+  color: white;
+}
+
+#game-over h1 {
+  font-size: 3em;
+  font-family: sans-serif;
+}
+
+#game-over button {
+  font-size: 1.5em;
+}
+
+#weapon-status {
+  margin: auto;
+  margin-bottom: 0px;
+  width: 512px;
+  height: 600px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: -82px;
+  z-index: 1;
+  display: block;
+  height: 178px;
+  text-align: center;
+  color: white;
+}
+
+#weapon-status h1 {
+  font-size: 3em;
+  font-family: sans-serif;
+  color: red;
+}
