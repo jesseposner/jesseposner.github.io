@@ -54,12 +54,15 @@
 	    playerBulletSpeed = 500,
 	    enemyBulletSpeed = 100;
 	
-	document.addEventListener("DOMContentLoaded", function () {
+	$(document).ready(function () {
 	  var canvas = document.createElement("canvas");
 	  var ctx = canvas.getContext("2d");
 	  canvas.width = 512;
 	  canvas.height = 600;
 	  document.body.appendChild(canvas);
+	  $(document).keypress(function(event) {
+	    event.preventDefault();
+	  });
 	
 	  Resources.load([
 	    'img/ufos.png',
