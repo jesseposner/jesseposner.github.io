@@ -99,7 +99,8 @@
 	  var dt = (now - lastTime) / 1000.0;
 	
 	  if (State.enemies.length === 0) {
-	    for (var i = 0; i < Math.floor(Math.random() * 10) + 10; i++) {
+	    State.enemyCount += 2;
+	    for (var i = 0; i < State.enemyCount; i++) {
 	      State.enemies.push({
 	        pos: [Math.random() * canvas.width,
 	              Math.random() * (canvas.height - 300)],
@@ -207,8 +208,8 @@
 	  State.enemyBullets.forEach(function (bullet, index) {
 	    bullet.pos[1] += enemyBulletSpeed * dt;
 	
-	    if (bullet.pos[1] < canvas.height - bullet.sprite.size[1]) {
-	      State.playerBullets.splice(index, 1);
+	    if (bullet.pos[1] > canvas.height) {
+	      State.enemyBullets.splice(index, 1);
 	    }
 	
 	    bullet.sprite.update(dt);
@@ -336,7 +337,6 @@
 	                           ]
 	                         )
 	                      });
-	
 	    State.lastFire = Date.now();
 	  }
 	
@@ -455,8 +455,8 @@
 	function reset(canvas) {
 	  document.getElementById('game-over').style.display = 'none';
 	  document.getElementById('game-over-overlay').style.display = 'none';
-	  document.getElementById('weapon-status-text').innerText = 'CHARGING';
-	  document.getElementById('weapon-status-text').style.color = 'red';
+	  document.getElementById('weapon-status-text').innerText = '';
+	  document.getElementById('weapon-status-text').style.color = 'green';
 	
 	  State.gameTime = 0;
 	  State.score = 0;
@@ -464,10 +464,11 @@
 	  State.enemies = [];
 	  State.bullets = [];
 	  State.enemyBullets = [];
+	  State.enemyCount = 3;
 	
 	  State.player.pos = [256, 450];
 	
-	  for (var i = 0; i < 10; i++) {
+	  for (var i = 0; i < State.enemyCount; i++) {
 	    State.enemies.push({
 	      pos: [Math.random() * canvas.width,
 	            Math.random() * (canvas.height - 300)],
@@ -480,11 +481,6 @@
 	      )
 	    });
 	  }
-	  setTimeout(function () {
-	    document.getElementById('weapon-status-text').innerText = 'READY';
-	    document.getElementById('weapon-status-text').style.color = 'green';
-	    State.lastFire = Date.now();
-	  }, 5000);
 	}
 
 
@@ -565,11 +561,13 @@
 	
 	  enemyBullets: [],
 	
+	  enemyCount: 3,
+	
 	  enemies: [],
 	
 	  explosions: [],
 	
-	  lastFire: 2926092504136,
+	  lastFire: 0,
 	
 	  gameTime: 0,
 	

@@ -12,11 +12,13 @@ var State = {
 
   enemyBullets: [],
 
+  enemyCount: 3,
+
   enemies: [],
 
   explosions: [],
 
-  lastFire: 2926092504136,
+  lastFire: 0,
 
   gameTime: 0,
 
