@@ -1,4 +1,8 @@
-# Space Invaders
+# Galaxy Invaders
+
+[Galaxy Invaders live][live_site]
+
+[live_site]: http://www.galaxyinvaders.space
 
 Space Invaders is a browser-based game that is inspired by the classic Space Invaders arcade game.
 
@@ -21,4 +25,4 @@ function requestAnimFrame(callback) {
 }
 ```
 
-Four different sprite animations are used to handle the banking of the player's shift to the left and to the right. These are triggered based on animation logic that responds to the user's input, with checks for the completion of an initiated animation skipping. 
+Four different sprite animations are used to handle the banking of the player's shift to the left and to the right. These are triggered based on animation logic that responds to the user's input, with checks for the completion of an initiated animation skipping.
