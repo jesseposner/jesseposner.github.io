@@ -43,6 +43,24 @@ h1 {
   display: none;
 }
 
+#mute {
+  margin: auto;
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  top: 0;
+  left: 440px;
+  right: 0px;
+  bottom: 540px;
+  z-index: 1;
+  cursor: pointer;
+}
+
+#mute img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
 #game-over-overlay {
   background-color: black;
   opacity: .5;

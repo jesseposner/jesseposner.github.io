@@ -90,6 +90,18 @@
 	    event.preventDefault();
 	  });
 	
+	  $( "#mute" ).click(function() {
+	    if (State.muted) {
+	      myMusic.play();
+	      $('#mute img').attr('src', 'img/unmuted.png');
+	      State.muted = false;
+	    } else {
+	      myMusic.stop();
+	      $('#mute img').attr('src', 'img/muted.png');
+	      State.muted = true;
+	    }
+	  });
+	
 	  Resources.load([
 	    'img/ufos.png',
 	    'img/fighter.png',
@@ -301,7 +313,7 @@
 	        bulletSize = [bullet.sprite.size[0] - 20, bullet.sprite.size[1] - 20];
 	
 	    if (boxCollides(playerPos, playerSize, bulletPos, bulletSize)) {
-	      new sound("audio/player_death.mp3").play();
+	      if (!State.muted) new sound("audio/player_death.mp3").play();
 	      State.explosions.push({
 	        pos: playerPos,
 	        sprite: new Sprite('img/explosion.png',
@@ -329,7 +341,7 @@
 	            bulletSize = bullet.sprite.size;
 	
 	        if (boxCollides(enemyPos, enemySize, bulletPos, bulletSize)) {
-	          new sound("audio/enemy_death.mp3").play();
+	          if (!State.muted) new sound("audio/enemy_death.mp3").play();
 	          State.explosions.push({
 	            pos: enemyPos,
 	            sprite: new Sprite('img/explosion.png',
@@ -373,7 +385,7 @@
 	                      });
 	
 	    State.lastFire = Date.now();
-	    playerShot.play();
+	    if (!State.muted) playerShot.play();
 	  }
 	
 	  if (Key.isPressed('left') && State.player.pos[0] >= 0) {
@@ -614,7 +626,9 @@
 	
 	  score: 0,
 	
-	  playerDirection: 'center'
+	  playerDirection: 'center',
+	
+	  muted: false
 	};
 	
 	module.exports = State;

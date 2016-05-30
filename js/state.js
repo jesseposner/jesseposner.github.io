@@ -24,7 +24,9 @@ var State = {
 
   score: 0,
 
-  playerDirection: 'center'
+  playerDirection: 'center',
+
+  muted: false
 };
 
 module.exports = State;
