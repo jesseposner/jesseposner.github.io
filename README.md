@@ -4,15 +4,11 @@
 
 [live_site]: http://www.galaxyinvaders.space
 
-Space Invaders is a browser-based game that is inspired by the classic Space Invaders arcade game.
-
-## Instructions
-
-Use the left arrow key to move left and the right arrow key to move right. Use the space bar to shoot once the weapon status indicator switches from "CHARGING" to "READY".
+Galaxy Invaders is a browser-based game that is inspired by the classic Space Invaders arcade game.
 
 ## Features
 
-Space Invaders uses a sprite engine to provide animated ships, bullets, and explosions. It uses the `requestAnimationFrame` browser API to provide fluid and efficient animations. A slightly modified version of Paul Irish's shim layer is implemented for backwards compatibility:
+Galaxy Invaders uses a sprite engine to provide animated ships, bullets, and explosions. It uses the `requestAnimationFrame` browser API to provide fluid and efficient animations. A slightly modified version of Paul Irish's shim layer is implemented for backwards compatibility:
 
 ```javascript
 function requestAnimFrame(callback) {
