@@ -8,12 +8,38 @@ var Resources = require('./resources.js'),
     playerBulletSpeed = 500,
     enemyBulletSpeed = 100;
 
+function sound(src, loop) {
+  loop = (typeof loop !== 'undefined' ? loop : false);
+
+  this.sound = document.createElement("audio");
+  this.sound.src = src;
+  this.sound.setAttribute("preload", "auto");
+  this.sound.setAttribute("controls", "none");
+  this.sound.style.display = "none";
+  if (loop) {
+    document.body.appendChild(this.sound);
+  } else {
+    document.getElementById("sounds").appendChild(this.sound);
+  }
+  this.play = function(){
+    this.sound.play();
+  };
+  this.stop = function(){
+    this.sound.pause();
+  };
+}
+
 $(document).ready(function () {
-  var canvas = document.createElement("canvas");
-  var ctx = canvas.getContext("2d");
+  var canvas = document.createElement("canvas"),
+      ctx = canvas.getContext("2d"),
+      myMusic = new sound("audio/music.mp3", true);
+
+  myMusic.sound.setAttribute("loop", "loop");
+  myMusic.play();
   canvas.width = 512;
   canvas.height = 600;
   document.body.appendChild(canvas);
+
   $(document).keypress(function(event) {
     event.preventDefault();
   });
@@ -25,6 +51,7 @@ $(document).ready(function () {
     'img/explosion.png',
     'img/enemy-bullet.png'
   ]);
+
   Resources.onReady(init.bind(null, ctx, canvas));
 });
 
@@ -39,7 +66,7 @@ function requestAnimFrame(callback) {
 
 function init(ctx, canvas) {
   var lastTime = Date.now(),
-  starField = new Starfield();
+      starField = new Starfield();
 
   document.getElementById('play-again')
           .addEventListener('click', function() {
@@ -52,8 +79,8 @@ function init(ctx, canvas) {
 }
 
 function main(ctx, canvas, lastTime, starField) {
-  var now = Date.now();
-  var dt = (now - lastTime) / 1000.0;
+  var now = Date.now(),
+      dt = (now - lastTime) / 1000.0;
 
   if (State.enemies.length === 0) {
     State.enemyCount += 2;
@@ -228,6 +255,7 @@ function checkCollisions() {
         bulletSize = [bullet.sprite.size[0] - 20, bullet.sprite.size[1] - 20];
 
     if (boxCollides(playerPos, playerSize, bulletPos, bulletSize)) {
+      new sound("audio/player_death.mp3").play();
       State.explosions.push({
         pos: playerPos,
         sprite: new Sprite('img/explosion.png',
@@ -255,6 +283,7 @@ function checkCollisions() {
             bulletSize = bullet.sprite.size;
 
         if (boxCollides(enemyPos, enemySize, bulletPos, bulletSize)) {
+          new sound("audio/enemy_death.mp3").play();
           State.explosions.push({
             pos: enemyPos,
             sprite: new Sprite('img/explosion.png',
@@ -281,8 +310,10 @@ function handleInput(dt, canvas) {
   if (
       Key.isPressed('space') && Date.now() - State.lastFire > 500
     ) {
-    var x = State.player.pos[0];
-    var y = State.player.pos[1] - State.player.sprite.size[1] / 2;
+    var x = State.player.pos[0],
+        y = State.player.pos[1] - State.player.sprite.size[1] / 2,
+        playerShot = new sound("audio/player_shot.mp3");
+
     State.playerBullets.push({ pos: [x, y], sprite: new Sprite(
                            'img/fighter-bullet.png',
                            [0, 0],
@@ -294,7 +325,9 @@ function handleInput(dt, canvas) {
                            ]
                          )
                       });
+
     State.lastFire = Date.now();
+    playerShot.play();
   }
 
   if (Key.isPressed('left') && State.player.pos[0] >= 0) {
@@ -414,6 +447,11 @@ function reset(canvas) {
   document.getElementById('game-over-overlay').style.display = 'none';
   document.getElementById('weapon-status-text').innerText = '';
   document.getElementById('weapon-status-text').style.color = 'green';
+
+  var sounds = document.getElementById("sounds");
+  while (sounds.firstChild) {
+    sounds.removeChild(sounds.firstChild);
+  }
 
   State.gameTime = 0;
   State.score = 0;

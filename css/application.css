@@ -2,6 +2,7 @@ html, body {
     margin: 0;
     padding: 0;
     background-color: #151515;
+    font-family: 'Play', sans-serif;
 }
 
 canvas {
@@ -19,9 +20,14 @@ h1, h3 {
   text-align: center;
   color: white;
   margin-bottom: 0px;
-  padding-bottom: 20px;
+  padding-bottom: 15px;
   padding-top: 0px;
   margin-top: 0px;
+  font-family: 'Play', sans-serif;
+}
+
+h1 {
+    color: red;
 }
 
 #game-over, #game-over-overlay {
@@ -50,7 +56,7 @@ h1, h3 {
 
 #game-over h1 {
   font-size: 3em;
-  font-family: sans-serif;
+  font-family: 'Play', sans-serif;
 }
 
 #game-over button {
@@ -76,6 +82,7 @@ h1, h3 {
 
 #weapon-status h1 {
   font-size: 3em;
-  font-family: sans-serif;
+  font-family: 'Play', sans-serif;
   color: red;
+  margin-top: 10px;
 }
