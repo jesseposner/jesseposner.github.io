@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Townsend Ch 1: Stern-Gerlach Experiments</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body, {
+    delimiters: [
+      {left: '$$', right: '$$', display: true},
+      {left: '$', right: '$', display: false}
+    ],
+    throwOnError: false
+  });"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        bg: '#0a0a0a',
+        surface: '#141414',
+        border: '#262626',
+        muted: '#737373',
+        accent: '#f59e0b',
+      }
+    }
+  }
+}
+</script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Inter', sans-serif; }
+  .mono { font-family: 'JetBrains Mono', monospace; }
+
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: #0a0a0a; }
+  ::-webkit-scrollbar-thumb { background: #262626; border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: #404040; }
+
+  .katex { font-size: 1.05em; color: #e4e4e7; }
+  .katex-display { margin: 1.5em 0; overflow-x: auto; overflow-y: hidden; padding: 0.5em 0; }
+  .katex-display > .katex { text-align: center; }
+
+  .sidebar { position: fixed; top: 0; left: 0; width: 280px; height: 100vh; overflow-y: auto; z-index: 50; }
+  .sidebar::-webkit-scrollbar { width: 4px; }
+  .sidebar::-webkit-scrollbar-thumb { background: #262626; border-radius: 2px; }
+
+  .nav-link {
+    display: block;
+    padding: 0.4rem 1rem 0.4rem 1.25rem;
+    font-size: 0.8125rem;
+    color: #737373;
+    border-left: 2px solid transparent;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    line-height: 1.4;
+  }
+  .nav-link:hover { color: #d4d4d8; }
+  .nav-link.active { color: #f59e0b; border-left-color: #f59e0b; background: rgba(245, 158, 11, 0.05); }
+  .nav-link.sub { padding-left: 2rem; font-size: 0.75rem; }
+
+  .main-content { margin-left: 280px; max-width: 800px; padding: 3rem 3rem 6rem 3rem; }
+
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6875rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #f59e0b;
+    margin-bottom: 0.5rem;
+  }
+
+  .callout {
+    border-left: 3px solid #f59e0b;
+    background: rgba(245, 158, 11, 0.05);
+    padding: 1rem 1.25rem;
+    margin: 1.25rem 0;
+    border-radius: 0 0.5rem 0.5rem 0;
+  }
+  .callout-devastating {
+    border-left: 3px solid #ef4444;
+    background: rgba(239, 68, 68, 0.06);
+    padding: 1rem 1.25rem;
+    margin: 1.25rem 0;
+    border-radius: 0 0.5rem 0.5rem 0;
+  }
+  .callout-result {
+    border-left: 3px solid #22c55e;
+    background: rgba(34, 197, 94, 0.05);
+    padding: 1rem 1.25rem;
+    margin: 1.25rem 0;
+    border-radius: 0 0.5rem 0.5rem 0;
+  }
+  .callout-physical {
+    border-left: 3px solid #60a5fa;
+    background: rgba(96, 165, 250, 0.05);
+    padding: 1rem 1.25rem;
+    margin: 1.25rem 0;
+    border-radius: 0 0.5rem 0.5rem 0;
+  }
+  .callout-intuition {
+    border-left: 3px solid #a78bfa;
+    background: rgba(167, 139, 250, 0.05);
+    padding: 1rem 1.25rem;
+    margin: 1.25rem 0;
+    border-radius: 0 0.5rem 0.5rem 0;
+  }
+
+  /* Interactive REPL */
+  .repl-container {
+    background: #111;
+    border: 1px solid #333;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    margin: 1.5rem 0;
+  }
+  .repl-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: #1a1a1a;
+    border-bottom: 1px solid #262626;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: #22c55e;
+  }
+  .repl-header .dot { width: 6px; height: 6px; border-radius: 50%; background: #22c55e; }
+  .repl-frame { width: 100%; height: 360px; border: none; background: #111; }
+  .repl-instructions {
+    padding: 0.75rem 1rem;
+    font-size: 0.8125rem;
+    color: #737373;
+    background: #0d0d0d;
+    border-top: 1px solid #1a1a1a;
+  }
+
+  .exp-card {
+    background: #141414;
+    border: 1px solid #262626;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    position: relative;
+  }
+  .exp-card::before {
+    content: attr(data-exp);
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: #0a0a0a;
+    padding: 0 0.5rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6875rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #f59e0b;
+  }
+  .exp-card.devastating { border-color: #ef4444; }
+  .exp-card.devastating::before { color: #ef4444; }
+  .exp-card.miracle { border-color: #8b5cf6; }
+  .exp-card.miracle::before { color: #8b5cf6; }
+
+  .sg-diagram {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin: 1rem 0;
+    overflow-x: auto;
+    padding: 0.75rem 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+  }
+  .sg-box {
+    background: #1e1e1e;
+    border: 1px solid #404040;
+    border-radius: 0.375rem;
+    padding: 0.375rem 0.75rem;
+    white-space: nowrap;
+    color: #d4d4d8;
+    flex-shrink: 0;
+  }
+  .sg-box.active { border-color: #f59e0b; color: #f59e0b; }
+  .sg-box.block { border-color: #ef4444; border-style: dashed; }
+  .sg-box.mod { border-color: #8b5cf6; color: #8b5cf6; }
+  .sg-arrow { color: #525252; padding: 0 0.25rem; flex-shrink: 0; font-size: 0.875rem; }
+  .sg-label { color: #737373; font-size: 0.6875rem; padding: 0 0.25rem; flex-shrink: 0; white-space: nowrap; }
+  .sg-output { display: flex; flex-direction: column; gap: 0.25rem; flex-shrink: 0; padding-left: 0.25rem; }
+  .sg-output-line { display: flex; align-items: center; gap: 0.25rem; }
+  .sg-result { font-size: 0.6875rem; padding: 0.125rem 0.5rem; border-radius: 0.25rem; white-space: nowrap; }
+  .sg-result.up { background: rgba(34,197,94,0.1); color: #22c55e; }
+  .sg-result.down { background: rgba(239,68,68,0.1); color: #ef4444; }
+  .sg-result.full { background: rgba(245,158,11,0.1); color: #f59e0b; }
+
+  blockquote {
+    border-left: 2px solid #404040;
+    padding-left: 1rem;
+    color: #a1a1aa;
+    font-style: italic;
+    margin: 1rem 0;
+  }
+
+  .eq-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6875rem;
+    color: #525252;
+    text-align: right;
+    margin-top: -1rem;
+    margin-bottom: 1rem;
+  }
+
+  .q-card {
+    background: #141414;
+    border: 1px solid #262626;
+    border-radius: 0.5rem;
+    margin: 1rem 0;
+    overflow: hidden;
+  }
+  .q-header {
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    transition: background 0.15s;
+  }
+  .q-header:hover { background: #1a1a1a; }
+  .q-num { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: #f59e0b; flex-shrink: 0; min-width: 1.5rem; }
+  .q-text { font-weight: 500; color: #e4e4e7; font-size: 0.9375rem; }
+  .q-toggle { margin-left: auto; color: #525252; font-size: 0.75rem; flex-shrink: 0; transition: transform 0.2s; }
+  .q-body { padding: 0 1rem 1rem 3.25rem; color: #a1a1aa; font-size: 0.875rem; line-height: 1.7; display: none; }
+  .q-card.open .q-body { display: block; }
+  .q-card.open .q-toggle { transform: rotate(180deg); }
+
+  .step { display: flex; gap: 1rem; margin: 1rem 0; }
+  .step-num {
+    flex-shrink: 0; width: 1.75rem; height: 1.75rem; border-radius: 50%;
+    background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.3);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: #f59e0b; margin-top: 0.15rem;
+  }
+  .step-content { flex: 1; }
+
+  .prose p { margin-bottom: 0.875rem; line-height: 1.75; color: #d4d4d8; }
+  .prose li { line-height: 1.75; color: #d4d4d8; margin-bottom: 0.25rem; }
+  .prose strong { color: #e4e4e7; font-weight: 600; }
+  .prose h2 {
+    font-size: 1.5rem; font-weight: 700; color: #fafafa;
+    margin-top: 3.5rem; margin-bottom: 1rem; padding-top: 2rem; border-top: 1px solid #1e1e1e;
+  }
+  .prose h2:first-child { margin-top: 0; padding-top: 0; border-top: none; }
+  .prose h3 { font-size: 1.125rem; font-weight: 600; color: #e4e4e7; margin-top: 2rem; margin-bottom: 0.75rem; }
+  .prose h4 { font-size: 0.9375rem; font-weight: 600; color: #a1a1aa; margin-top: 1.5rem; margin-bottom: 0.5rem; }
+  .prose ul { list-style: disc; padding-left: 1.5rem; margin-bottom: 0.875rem; }
+  .prose ol { list-style: decimal; padding-left: 1.5rem; margin-bottom: 0.875rem; }
+  .prose code {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.8125em;
+    background: #1e1e1e; padding: 0.125rem 0.375rem; border-radius: 0.25rem; color: #f59e0b;
+  }
+
+  .divider { height: 1px; background: #1e1e1e; margin: 2rem 0; }
+
+  /* Apparatus diagram */
+  .apparatus {
+    background: #111;
+    border: 1px solid #262626;
+    border-radius: 0.75rem;
+    padding: 2rem 1.5rem;
+    margin: 1.5rem 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    text-align: center;
+    color: #a1a1aa;
+    line-height: 1.8;
+  }
+  .apparatus .piece {
+    display: inline-block;
+    border: 1px solid #404040;
+    border-radius: 0.375rem;
+    padding: 0.25rem 0.75rem;
+    margin: 0.25rem;
+    background: #1a1a1a;
+  }
+  .apparatus .piece.highlight {
+    border-color: #f59e0b;
+    color: #f59e0b;
+  }
+  .apparatus .arrow { color: #525252; margin: 0 0.25rem; }
+
+  @media (max-width: 1024px) {
+    .sidebar { display: none; }
+    .main-content { margin-left: 0; max-width: 100%; padding: 2rem 1.5rem 4rem; }
+  }
+</style>
+</head>
+<body class="bg-bg text-zinc-200 min-h-screen">
+
+<!-- Sidebar Navigation -->
+<nav class="sidebar bg-surface border-r border-border">
+  <div class="p-6 pb-4">
+    <div class="section-label" style="margin-bottom: 0.25rem;">Seminar Prep</div>
+    <h1 class="text-lg font-bold text-zinc-100">Townsend Ch 1</h1>
+    <p class="text-xs text-muted mt-1">Stern-Gerlach Experiments</p>
+    <p class="text-xs text-muted mt-0.5 mono">Mar 14 with Pesic</p>
+  </div>
+  <div class="h-px bg-border mx-4 mb-3"></div>
+  <div class="pb-8">
+    <a href="#overview" class="nav-link active">Overview</a>
+
+    <a href="#em-from-scratch" class="nav-link" style="margin-top: 0.75rem;">Before the Lab: E&amp;M</a>
+    <a href="#em-charge" class="nav-link sub">What Is Charge?</a>
+    <a href="#em-two-kinds" class="nav-link sub">Why Two Kinds?</a>
+    <a href="#em-atoms" class="nav-link sub">Atoms: The Balance Sheet</a>
+    <a href="#em-moving-charge" class="nav-link sub">Moving Charge</a>
+    <a href="#em-magnetism" class="nav-link sub">What Is a Magnet?</a>
+    <a href="#em-the-link" class="nav-link sub">The Link to Spin</a>
+
+    <a href="#start-here" class="nav-link" style="margin-top: 0.75rem;">Start Here: The Lab</a>
+    <a href="#what-is-spin" class="nav-link sub">What Is Spin?</a>
+    <a href="#what-is-magnetic" class="nav-link sub">What Is a Magnetic Moment?</a>
+    <a href="#the-apparatus" class="nav-link sub">The Apparatus, Piece by Piece</a>
+    <a href="#what-they-expected" class="nav-link sub">What They Expected</a>
+    <a href="#what-they-got" class="nav-link sub">What They Got</a>
+
+    <a href="#sec-1-1" class="nav-link" style="margin-top: 0.75rem;">1.1 The Formal Version</a>
+    <a href="#physics-chain" class="nav-link sub">The Physics Chain</a>
+    <a href="#bookkeeping" class="nav-link sub">Bookkeeping Detail</a>
+
+    <a href="#exercises-1" class="nav-link sub" style="color:#22c55e;">&#9654; Try It: Forces &amp; Deflection</a>
+
+    <a href="#sec-1-2" class="nav-link" style="margin-top: 0.75rem;">1.2 Four Experiments</a>
+    <a href="#exp-1" class="nav-link sub">Exp 1: Same Question Twice</a>
+    <a href="#exp-2" class="nav-link sub">Exp 2: A Different Question</a>
+    <a href="#exp-3" class="nav-link sub">Exp 3: The Devastating One</a>
+    <a href="#exp-4" class="nav-link sub">Exp 4: The Miracle</a>
+    <a href="#why-classical-fails" class="nav-link sub">Why Classical Fails</a>
+
+    <a href="#exercises-2" class="nav-link sub" style="color:#22c55e;">&#9654; Try It: Simulate Experiments</a>
+
+    <a href="#sec-1-3" class="nav-link" style="margin-top: 0.75rem;">1.3 The Quantum State Vector</a>
+    <a href="#analogy" class="nav-link sub">The Analogy That Works</a>
+    <a href="#kets" class="nav-link sub">Ket Vectors</a>
+    <a href="#bras" class="nav-link sub">Bras & Inner Products</a>
+    <a href="#born-rule" class="nav-link sub">The Born Rule</a>
+
+    <a href="#exercises-3" class="nav-link sub" style="color:#22c55e;">&#9654; Try It: States &amp; Probabilities</a>
+
+    <a href="#example" class="nav-link" style="margin-top: 0.75rem;">Worked Example</a>
+
+    <a href="#questions" class="nav-link" style="margin-top: 0.75rem;">Seminar Questions</a>
+
+    <a href="#philosophical" class="nav-link" style="margin-top: 0.75rem;">The Deeper Thread</a>
+  </div>
+</nav>
+
+<!-- Main Content -->
+<main class="main-content prose">
+
+  <!-- Overview -->
+  <section id="overview">
+    <div class="section-label">Section 0</div>
+    <h2 style="margin-top: 0; padding-top: 0; border-top: none;">Overview</h2>
+
+    <p>The Olympians are switching from Jordan's book to <strong>Townsend, A Modern Approach to Quantum Mechanics</strong>. This is the March 14 session with Pesic.</p>
+
+    <div class="callout">
+      <p style="margin-bottom: 0.5rem;"><strong>What Pesic assigned:</strong></p>
+      <ul style="margin-bottom: 0;">
+        <li><strong>Section 1.1</strong> (pp. 1-5): Review. The original Stern-Gerlach experiment.</li>
+        <li><strong>Section 1.2</strong> (pp. 5-9): Core material. Four thought experiments that break classical physics.</li>
+        <li><strong>Section 1.3</strong> (pp. 10+): Beginning. The quantum state vector formalism. Pesic says "I don't imagine we'll go further."</li>
+      </ul>
+    </div>
+
+    <p>This prep page has three layers. <span style="color:#60a5fa;">Blue boxes</span> build physical intuition from scratch: no jargon, everything concrete, every piece of the apparatus explained. <span style="color:#f59e0b;">Gold boxes</span> are key insights. <span style="color:#a78bfa;">Purple boxes</span> are "why does this make sense?" checks. <span style="color:#22c55e;">Green sections</span> are live Python exercises that run in your browser (no install needed).</p>
+
+    <p>If electromagnetism feels shaky, start with "Before the Lab," which builds charge, magnetism, and their connection from pure physical reasoning. Then "The Lab" builds the experiment. Once the physical picture is solid, the math in later sections just writes down what you already understand.</p>
+  </section>
+
+  <!-- BEFORE THE LAB: ELECTROMAGNETISM FROM SCRATCH -->
+  <section id="em-from-scratch">
+    <div class="section-label">Before Ground Zero</div>
+    <h2>Before the Lab: What Is Electromagnetism?</h2>
+
+    <p>The Stern-Gerlach experiment is about magnetism. To understand it, you need to know what charge is, what a magnet is, and how they're connected. This section builds that up from nothing. No equations. No jargon. Just physical reasoning about things you can observe.</p>
+
+    <h3 id="em-charge">What Is Charge?</h3>
+
+    <p>Charge is a property of matter, like mass. Mass determines how strongly gravity pulls on something. Charge determines how strongly <em>electrical</em> forces act on something. That's all it is: a measure of how much a thing participates in electrical interactions.</p>
+
+    <p>Some particles have charge. Some don't. A neutron has no charge: electrical forces ignore it completely. An electron has charge: it feels electrical forces and creates them. Having charge versus not having charge is like being magnetic versus non-magnetic. It's a property you either have or don't.</p>
+
+    <div class="callout-physical">
+      <p style="margin-bottom: 0;"><strong>The bedrock:</strong> Charge is irreducible. It doesn't reduce to something simpler. You can say what it <em>does</em> (creates and feels electrical forces, comes in two opposite types, is conserved), but you can't say what it <em>is made of</em>. It's fundamental, like mass, like spatial extension. This is the kind of thing physics lands on: a property you describe by its behavior, not by its internal composition, because it has none.</p>
+    </div>
+
+    <h3 id="em-two-kinds">Why Two Kinds?</h3>
+
+    <p>Here's something you can do at home. Rub a glass rod with silk. Rub a plastic rod with fur. Bring the glass rod near the plastic rod: they pull toward each other. Bring two rubbed glass rods near each other: they push apart. Two rubbed plastic rods: also push apart.</p>
+
+    <p>There are two teams. Members of the same team repel. Opposite teams attract.</p>
+
+    <p>Benjamin Franklin named one team "positive" and the other "negative." He could have called them "red" and "blue" or "A" and "B." The names carry no meaning beyond: <strong>there are two, and they're opposite.</strong> "Positive" and "negative" are just labels encoding one rule: same charges repel, opposite charges attract.</p>
+
+    <p>But what's physically happening with the rods? Something very concrete.</p>
+
+    <p>Every atom starts electrically neutral: the number of protons (positive charge) exactly equals the number of electrons (negative charge), so they cancel. The glass rod, the silk, your hand: all neutral.</p>
+
+    <p>When you rub glass with silk, you're pressing their surfaces together and pulling them apart, over and over. Some electrons on the surface of the glass are held loosely by their atoms. The silk atoms happen to grip electrons more tightly. So during the rubbing, some electrons <strong>physically transfer</strong> from the glass surface onto the silk surface. Actual particles leaving one object and landing on another.</p>
+
+    <p>Now the glass has fewer electrons than protons: net positive. The silk has more electrons than protons: net negative.</p>
+
+    <div class="callout">
+      <p style="margin-bottom: 0;"><strong>Key insight:</strong> "Positive" and "negative" are not mysterious essences. They're a headcount. More electrons than protons? Negative. Fewer? Positive. The "two kinds" of charge reduce to: which side has the extra electrons? The proton is inherently positive. The electron is inherently negative. An atom's charge is the balance between them.</p>
+    </div>
+
+    <p>Plastic and fur work the same way, just the other direction. Fur holds its electrons loosely, plastic grips them tightly. Electrons jump from fur to plastic. Plastic goes negative, fur goes positive. Different materials have different grip strengths for their surface electrons (there's a ranked list called the triboelectric series). That's why different pairings produce different results.</p>
+
+    <h3 id="em-atoms">Atoms: The Balance Sheet</h3>
+
+    <p>An atom has a nucleus (protons + neutrons) at the center, with electrons around it. Protons are positive, electrons are negative, neutrons are neutral. In a normal atom, the count is equal: a silver atom has 47 protons and 47 electrons. Net charge: zero.</p>
+
+    <p>The protons are locked inside the nucleus, which is locked in position (in a solid, atoms are arranged in a fixed lattice). They're not going anywhere. The outermost electrons are the loose ones: they can transfer between surfaces (static electricity), flow through a wire (electric current), or be stripped off entirely (ionization).</p>
+
+    <p>So almost every electrical phenomenon you encounter: static cling, lightning, the current powering your laptop, is <strong>electrons moving while protons sit still</strong>.</p>
+
+    <div class="callout-intuition">
+      <p style="margin-bottom: 0;"><strong>Intuition check:</strong> Atoms really want to be neutral. When you rub glass with silk and strip off electrons, the glass doesn't stay charged forever. Given the chance (humidity in the air, touching something conductive), electrons will flow back to restore the balance. Static electricity tricks work better on dry days because moisture gives the electrons a path home.</p>
+    </div>
+
+    <h3 id="em-moving-charge">Moving Charge</h3>
+
+    <p>Charge doesn't move on its own. Charge is a property of a particle, and the <em>particle</em> moves. The charge goes with it, the way your mass goes with you when you walk across a room. Your mass doesn't independently "move." You move, and your mass is along for the ride.</p>
+
+    <p>"Moving charge" just means: a charged particle that is traveling through space. Electrons flowing through a copper wire is moving charge. That flow is what we call <strong>electric current</strong>.</p>
+
+    <p>A charge sitting still creates an <strong>electric field</strong> around it: other charges nearby feel a push or pull. That's the static electricity from the glass rod. Nothing is moving; the field just exists around the charged object, reaching out into space.</p>
+
+    <p>A charge that's <em>moving</em> creates something additional: a <strong>magnetic field</strong> around it, on top of the electric field. This is the deep connection between electricity and magnetism, and it's where we're headed.</p>
+
+    <h3 id="em-magnetism">What Is a Magnet?</h3>
+
+    <p>You know what a refrigerator magnet does: it sticks to the fridge. It has two ends (north and south). Two magnets near each other: opposite ends attract, same ends repel. (Same pattern as charge, but a different force.)</p>
+
+    <p>Here's the key: <strong>magnetism is what charge does when it moves.</strong></p>
+
+    <p>This isn't a metaphor. It's literal. Run electric current (moving electrons) through a coil of wire and the coil becomes a magnet. You can pick up paperclips with it. Turn off the current, the magnetism disappears. This is an electromagnet, and it makes the connection visceral: moving charge creates a magnetic field.</p>
+
+    <p>A permanent magnet (like a fridge magnet) works the same way, just at the atomic scale. Inside the material, electrons are doing things that constitute moving charge: orbiting nuclei and having that intrinsic spin property. In most materials, these tiny atomic magnets point in random directions and cancel out. In a permanent magnet, they're aligned, and their magnetic fields add up into something you can feel at human scale.</p>
+
+    <div class="callout-physical">
+      <p style="margin-bottom: 0;"><strong>The physical picture:</strong> Every magnet you've ever touched is magnetic because charges inside it are moving. There is no magnetism without charge in motion (or the spin equivalent). Electricity and magnetism are not two separate things: they're two aspects of one thing. That's why the unified subject is called <em>electromagnetism</em>.</p>
+    </div>
+
+    <h3 id="em-the-link">The Link to Spin</h3>
+
+    <p>Now we can say precisely what the Stern-Gerlach experiment is about.</p>
+
+    <p>The electron has charge. The electron has a property called spin. Whatever spin is internally, it acts like charge in motion: it makes the electron magnetic. The electron is a tiny magnet, not because anything is literally rotating, but because it has charge and it has spin, and charge plus spin equals magnetism.</p>
+
+    <p>The strength and direction of this magnetism is called the electron's <strong>magnetic moment</strong>: a precise way of saying "how strong a magnet it is and which direction it points."</p>
+
+    <p>The Stern-Gerlach experiment puts atoms in an inhomogeneous magnetic field to measure this magnetic moment. What they found: it only takes two values. Not a continuum. Two. That's quantization, and that's where the next section picks up.</p>
+
+    <div class="callout">
+      <p style="margin-bottom: 0;"><strong>The full chain:</strong> Charge (irreducible property of electrons and protons) &rarr; moving charge creates magnetism &rarr; electron's spin acts like moving charge &rarr; electron is a tiny magnet &rarr; Stern-Gerlach measures this magnetism &rarr; only two values &rarr; spin is quantized. Everything in this chapter flows from this chain.</p>
+    </div>
+  </section>
+
+  <!-- START HERE: THE LAB -->
+  <section id="start-here">
+    <div class="section-label">Ground Zero</div>
+    <h2>Start Here: The Lab</h2>
+
+    <p>The physical foundation is set. Now let's build the experiment from nothing. Every word earns its place.</p>
+
+    <h3 id="what-is-spin">What Is Spin?</h3>
+
+    <p>Forget the word "spin" for a moment. Here's what we actually know:</p>
+
+    <p>Electrons have a property that makes them behave like tiny magnets. That's an experimental fact, not a theory. If you put an electron near a magnet, it gets pushed. Not because it's charged (charges feel electric fields), but because it has its own magnetic character, like a little compass needle.</p>
+
+    <p>Physicists call this property "spin angular momentum," and that name is a historical accident that causes endless confusion. It's called "spin" because when they first discovered it, they tried to explain it as the electron literally spinning like a tiny ball. That model is wrong. It gives the wrong numbers, and it requires the surface of the electron to move faster than light. The electron isn't spinning. It just has this magnetic property, and the property is quantified by the same kind of mathematics as angular momentum.</p>
+
+    <div class="callout-physical">
+      <p style="margin-bottom: 0;"><strong>The physical fact:</strong> Electrons are tiny magnets. The strength and direction of this magnetism is described by a quantity called "spin." Don't try to picture what's spinning. Nothing is. The electron just <em>is</em> magnetic, irreducibly.</p>
+    </div>
+
+    <h3 id="what-is-magnetic">What Is a Magnetic Moment?</h3>
+
+    <p>A "magnetic moment" is just a precise way of saying "how strong a magnet something is, and which direction it points." A compass needle has a magnetic moment pointing from its south end to its north end. A bigger, stronger magnet has a larger magnetic moment.</p>
+
+    <p>When we say an electron has a magnetic moment, we mean: it behaves as though it has a tiny north pole and a tiny south pole, with a specific strength and a specific orientation in space.</p>
+
+    <p>Here's where spin and magnetism connect. Townsend writes it as an equation (1.3), but the English is:</p>
+
+    <div class="callout-physical">
+      <p style="margin-bottom: 0;"><strong>The link:</strong> The electron's magnetic moment is proportional to its spin. If you know the spin, you know the magnetism, and vice versa. They're locked together. So measuring the magnetism (which we can do, with magnets) is the same as measuring the spin (which we can't see directly).</p>
+    </div>
+
+    <h3 id="the-apparatus">The Apparatus, Piece by Piece</h3>
+
+    <p>The Stern-Gerlach experiment (1922) has four physical components. Here's each one:</p>
+
+    <h4>1. The oven</h4>
+    <p>A small furnace containing silver. You heat it until silver atoms boil off as a gas. The atoms fly out of a small hole in random directions, like steam from a kettle, but much, much faster (hundreds of meters per second).</p>
+
+    <h4>2. The collimator</h4>
+    <p>A series of narrow slits, like looking through a mail slot. Most atoms smash into the walls. Only atoms traveling in a very specific direction make it through. What emerges is a thin, straight <strong>beam</strong> of silver atoms, all moving in roughly the same direction. Think of it as a silver atom laser (it's not a laser, but the beam is similarly tight and directional).</p>
+
+    <h4>3. The magnet</h4>
+    <p>This is the heart of the experiment, and the design matters.</p>
+
+    <p>Two magnetic pole pieces, with a gap between them for the beam to pass through. One pole is flat on its face. The other is sharpened to a wedge or point.</p>
+
+    <p><strong>Why the asymmetry?</strong> This is crucial. A symmetric magnet (two flat poles) creates a roughly uniform field between them. But we need an <strong>inhomogeneous</strong> (non-uniform) field, one that's stronger in some places and weaker in others. The sharp tip concentrates the field lines near itself, making the field very strong close to the tip and weaker farther away. This creates a <strong>gradient</strong>: the field strength changes as you move in space.</p>
+
+    <div class="callout-physical">
+      <p><strong>Why does the gradient matter?</strong> Think about why a refrigerator magnet sticks to your fridge but doesn't fly across the room. Near the fridge surface, the field changes rapidly (strong gradient). Far from the fridge, the field is nearly zero (no gradient). A magnet in a uniform field gets <em>torqued</em> (twisted to align), but it doesn't get <em>pushed</em>. You need a gradient, a difference in field strength between where the north pole of your little magnet is and where the south pole is, to get a net push.</p>
+      <p style="margin-bottom: 0;">The silver atom is a tiny magnet. The sharp-tipped pole piece creates a field that varies in space. The atom gets pushed, and the direction and amount of push depends on the orientation of the atom's magnetic moment relative to the field gradient.</p>
+    </div>
+
+    <h4>4. The detector</h4>
+    <p>A glass plate or photographic film. Silver atoms that hit it leave a visible deposit, like a dark smudge. Over time, as millions of atoms hit, you can see a pattern of where they landed.</p>
+
+    <div class="apparatus">
+      <span class="piece">Oven</span>
+      <span class="arrow">&rarr;</span>
+      <span class="piece">Collimator (slits)</span>
+      <span class="arrow">&rarr;</span>
+      <span class="piece highlight">Magnet (sharp tip + flat face)</span>
+      <span class="arrow">&rarr;</span>
+      <span class="piece">Glass plate detector</span>
+      <br><br>
+      <span style="color: #525252;">The beam enters from the left. The magnet deflects atoms up or down depending on their spin. The detector records where they land.</span>
+    </div>
+
+    <h3 id="what-they-expected">What They Expected to See</h3>
+
+    <p>Here's the classical reasoning. Each silver atom is a tiny magnet flying through the inhomogeneous field. The push it feels depends on how its magnetic north-south axis is oriented relative to the field gradient.</p>
+
+    <p>An atom whose north pole points straight up (aligned with the gradient) gets the maximum push upward. An atom whose north pole points straight down gets the maximum push downward. An atom oriented sideways gets no push at all. And every angle in between gives a push somewhere in between.</p>
+
+    <p>The atoms come out of the oven with <strong>random orientations</strong>. There's no reason for any direction to be preferred. So you'd expect a <strong>continuous smear</strong> on the detector plate: a vertical streak, thickest in the middle (sideways atoms, no push) and thinning out at the top and bottom (perfectly aligned atoms, maximum push).</p>
+
+    <div class="callout-intuition">
+      <p style="margin-bottom: 0;"><strong>Intuition check:</strong> Imagine throwing a handful of tiny compass needles through a magnetic field gradient, each needle pointing in a random direction. Some get pushed up a lot, some a little, some not at all, some down. You'd see them land everywhere along a vertical line. A smooth smear.</p>
+    </div>
+
+    <h3 id="what-they-got">What They Actually Got</h3>
+
+    <p>Two spots. Not a smear. Two dots.</p>
+
+    <p>Every single atom was deflected either fully up or fully down. Nothing in between. No atom ever landed in the middle.</p>
+
+    <p>This is as if you threw those compass needles through the field and every single one somehow snapped to point either perfectly up or perfectly down, as though the in-between orientations simply didn't exist.</p>
+
+    <div class="callout-devastating">
+      <p style="margin-bottom: 0;"><strong>What this means:</strong> The component of the electron's spin along the direction of the magnetic field only takes two values. Not a continuum, as you'd get from random orientations of a classical magnet. Two. We call them "spin up" ($S_z = +\hbar/2$) and "spin down" ($S_z = -\hbar/2$). The experiment directly reveals that spin angular momentum is <strong>quantized</strong>: it comes in discrete chunks.</p>
+    </div>
+
+    <h4>Why silver? (The one thing that isn't weird)</h4>
+
+    <p>Silver has 47 electrons. 46 of them pair up: for every electron with spin pointing one way, there's a partner pointing the other way, and they cancel out. The 47th electron is unpaired and alone. It also happens to have zero <em>orbital</em> angular momentum (it's in what chemists call an "s-orbital," which has spherical symmetry, so no preferred axis of circulation). So the atom's entire magnetic personality comes from that one electron's intrinsic spin. Silver isolates the quantum phenomenon perfectly.</p>
+
+    <p>This is 1922. Bohr has proposed quantized electron orbits (1913). Schr&ouml;dinger's equation doesn't exist yet (1926). The math to explain what's happening hasn't been invented. Stern and Gerlach just see two dots where there should be a smear, and they send Bohr a postcard: <em>"the experimental proof of directional quantization."</em></p>
+  </section>
+
+  <!-- Section 1.1: The Formal Version -->
+  <section id="sec-1-1">
+    <div class="section-label">Section 1.1</div>
+    <h2>The Formal Version <span class="text-muted font-normal text-base">(pp. 1-5)</span></h2>
+
+    <p>Now that the physical picture is clear, here are Townsend's equations. Each one just writes down something you already understand.</p>
+
+    <h3 id="physics-chain">The Physics Chain <span class="mono text-muted text-xs font-normal">(Eqs 1.1-1.4)</span></h3>
+
+    <h4>Eq 1.1: How orbiting charge makes magnetism</h4>
+
+    <p>A charged particle orbiting in a circle is a loop of current. A loop of current is a magnet (this is how electromagnets work). The magnetic moment is proportional to how fast the charge circulates, which is proportional to its angular momentum:</p>
+
+    $$\mu = \frac{IA}{c} = \left(\frac{q}{T}\right)\frac{\pi r^2}{c} = \frac{qvr}{2c} = \frac{q}{2mc}L$$
+    <div class="eq-label">Eq 1.1</div>
+
+    <div class="callout-intuition">
+      <p style="margin-bottom: 0;"><strong>In English:</strong> magnetic moment = (charge / 2 &times; mass &times; speed of light) &times; angular momentum. The factor $q/2mc$ is just the conversion rate between "amount of rotation" and "strength of magnetism." It depends on the particle's charge and mass.</p>
+    </div>
+
+    <h4>Eq 1.2: Direction matters</h4>
+
+    $$\boldsymbol{\mu} = \frac{q}{2mc}\mathbf{L}$$
+    <div class="eq-label">Eq 1.2</div>
+
+    <p>Bold face means vector: it has both magnitude and direction. The magnetic moment points along (or against) the angular momentum direction, depending on the sign of the charge.</p>
+
+    <h4>Eq 1.3: Spin version (the empirical leap)</h4>
+
+    $$\boldsymbol{\mu} = \frac{gq}{2mc}\mathbf{S}$$
+    <div class="eq-label">Eq 1.3</div>
+
+    <p>Same relationship, but for intrinsic spin <strong>S</strong> instead of orbital angular momentum <strong>L</strong>. The $g$ factor is new: it's experimentally measured to be about 2 for the electron. If spin were literally a ball rotating, $g$ would be 1 (same as orbital motion). The fact that $g \approx 2$ is nature saying: "this isn't orbital motion, this is something else entirely."</p>
+
+    <h4>Eq 1.4: The force that separates the beam</h4>
+
+    $$F_z = \boldsymbol{\mu} \cdot \frac{\partial \mathbf{B}}{\partial z} \simeq \mu_z \frac{\partial B_z}{\partial z}$$
+    <div class="eq-label">Eq 1.4</div>
+
+    <div class="callout-physical">
+      <p style="margin-bottom: 0;"><strong>Reading this equation:</strong> The force on the atom in the z-direction equals the atom's magnetic moment in the z-direction times the rate at which the magnetic field changes in the z-direction. Bigger magnetic moment or steeper field gradient = more force = more deflection. This is why the sharp tip matters: it makes $\partial B_z / \partial z$ large.</p>
+    </div>
+
+    <h3 id="bookkeeping">Bookkeeping Detail</h3>
+
+    <p>Townsend puts the sharp tip on the N pole (bottom). In this setup, $B_z$ gets weaker as you go up, so $\partial B_z / \partial z < 0$ (negative gradient).</p>
+
+    <p>The electron has charge $q = -e$ (negative). With $g = 2$, the magnetic moment component is $\mu_z = (-e/m_e c) S_z$.</p>
+
+    <p>For spin-up ($S_z = +\hbar/2$): $\mu_z$ is negative (spin and magnetic moment point in <em>opposite</em> directions for a negative charge). The force is $F_z = \text{negative} \times \text{negative} = \text{positive}$. So spin-up atoms go up. Convenient for our diagrams.</p>
+  </section>
+
+  <!-- Exercise 1: After Section 1.1 -->
+  <section id="exercises-1">
+    <div class="section-label" style="color: #22c55e;">Interactive Exercise</div>
+    <h2 style="color: #22c55e;">Try It: Forces &amp; Deflection</h2>
+
+    <p>Use the live Python REPL below to compute the magnetic moment and force on a silver atom. The code is pre-loaded; hit <strong>Shift+Enter</strong> to run each block. Modify the values and re-run to build intuition.</p>
+
+    <div class="repl-container">
+      <div class="repl-header"><span class="dot"></span> Live Python (runs in your browser)</div>
+      <iframe class="repl-frame"
+        src="https://jupyterlite.github.io/demo/repl/index.html?kernel=python&toolbar=1&theme=JupyterLab%20Dark&code=import%20numpy%20as%20np%0A%0A%23%20Constants%20(Gaussian%20units)%0Ahbar%20%3D%201.055e-27%20%20%20%23%20erg%C2%B7s%0Ae%20%3D%204.803e-10%20%20%20%20%20%23%20esu%0Am_e%20%3D%209.109e-28%20%20%20%23%20grams%0Ac%20%3D%202.998e10%20%20%20%20%20%23%20cm%2Fs%0Ag%20%3D%202.00%0A%0A%23%20Magnetic%20moment%20for%20spin-up%20(S_z%20%3D%20%2Bhbar%2F2)%0AS_z%20%3D%20hbar%20%2F%202%0Amu_z%20%3D%20(g%20*%20(-e))%20%2F%20(2%20*%20m_e%20*%20c)%20*%20S_z%0Aprint(f'mu_z%20for%20spin-up%20%3D%20%7Bmu_z%3A.4e%7D%20erg%2Fgauss')%0Aprint(f'Sign%20is%20NEGATIVE%20(electron%20charge%20is%20negative)')%0Aprint()%0A%0A%23%20Force%3A%20F_z%20%3D%20mu_z%20*%20dB_z%2Fdz%0A%23%20With%20sharp%20tip%20on%20N%20pole%3A%20dB_z%2Fdz%20%3C%200%0AdBdz%20%3D%20-1000%20%20%23%20gauss%2Fcm%20(typical%20value)%0AF_z%20%3D%20mu_z%20*%20dBdz%0Aprint(f'dB_z%2Fdz%20%3D%20%7BdBdz%7D%20gauss%2Fcm')%0Aprint(f'F_z%20%3D%20%7BF_z%3A.4e%7D%20dynes')%0Aprint(f'Force%20is%20POSITIVE%20%E2%86%92%20spin-up%20deflects%20UP')%0Aprint()%0A%0A%23%20Now%20try%20spin-down!%20Change%20S_z%20to%20-hbar%2F2%0A%23%20and%20re-run%20to%20see%20it%20deflect%20the%20other%20way"
+      ></iframe>
+      <div class="repl-instructions">
+        First load may take ~10s (downloading Python to your browser). Type code and Shift+Enter to run. Try changing <code>S_z = -hbar / 2</code> for spin-down.
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 1.2: Four Experiments -->
+  <section id="sec-1-2">
+    <div class="section-label">Section 1.2</div>
+    <h2>Four Experiments <span class="text-muted font-normal text-base">(pp. 5-9)</span></h2>
+
+    <p>Now we chain multiple Stern-Gerlach devices together. Each experiment adds one device. The results start reasonable and end impossible.</p>
+
+    <p>The notation: <strong>SGz</strong> means a Stern-Gerlach device with its field gradient pointing in the z-direction (up-down). <strong>SGx</strong> means one oriented in the x-direction (left-right). Same device, just rotated 90 degrees.</p>
+
+    <p>$|{+z}\rangle$ is the notation for "a particle known to be spin-up in z." Read it as a label: "the state called plus-z." We'll make this notation precise in Section 1.3.</p>
+
+    <!-- Experiment 1 -->
+    <div class="exp-card" data-exp="Experiment 1" id="exp-1">
+      <h3 style="margin-top: 0.25rem;">Asking the Same Question Twice</h3>
+
+      <p><strong>What you do:</strong> Run atoms through an SGz device. Take only the ones that came out the top (spin-up). Feed them into a second SGz device.</p>
+
+      <p><strong>What you're asking:</strong> "I selected spin-up atoms. If I check again, are they still spin-up?"</p>
+
+      <div class="sg-diagram">
+        <span class="sg-label">Oven</span>
+        <span class="sg-arrow">&rarr;</span>
+        <span class="sg-box active">SGz</span>
+        <span class="sg-arrow">&rarr;</span>
+        <span class="sg-label">select +z</span>
+        <span class="sg-arrow">&rarr;</span>
+        <span class="sg-label" style="color:#a1a1aa;">N<sub>0</sub></span>
+        <span class="sg-arrow">&rarr;</span>
+        <span class="sg-box active">SGz</span>
+        <span class="sg-arrow">&rarr;</span>
+        <span class="sg-output">
+          <span class="sg-output-line"><span class="sg-result full">N<sub>0</sub> &nbsp;+z</span></span>
+          <span class="sg-output-line"><span class="sg-result" style="background:rgba(113,113,122,0.1);color:#525252;">0 &nbsp;&minus;z</span></span>
+        </span>
+      </div>
+
+      <div class="callout-result">
+        <p style="margin-bottom: 0;"><strong>Result: 100% come out spin-up.</strong> No surprises. If you sorted them once, they stay sorted. The first device didn't just filter; it <strong>prepared</strong> the atoms in a definite state. This is important: measurement is preparation.</p>
+      </div>
+    </div>
+
+    <!-- Experiment 2 -->
+    <div class="exp-card" data-exp="Experiment 2" id="exp-2">
+      <h3 style="margin-top: 0.25rem;">Asking a Different Question</h3>
+
+      <p><strong>What you do:</strong> Take spin-up-in-z atoms. Now pass them through an SGx device (the magnet is rotated 90 degrees, gradient pointing in the x-direction).</p>
+
+      <p><strong>What you're asking:</strong> "I know these are spin-up in z. What happens if I measure spin in the x-direction?"</p>
+
+      <div class="sg-diagram">
+        <span class="sg-label">Oven</span>
+        <span class="sg-arrow">&rarr;</span>
+        <span class="sg-box active">SGz</span>
+        <span class="sg-arrow">&rarr;</span>
+        <span class="sg-label">select +z</span>
+        <span class="sg-arrow">&rarr;</span>
+        <span class="sg-label" style="color:#a1a1aa;">N<sub>0</sub></span>
+        <span class="sg-arrow">&rarr;</span>
+        <span class="sg-box" style="border-color:#3b82f6;color:#3b82f6;">SGx</span>
+        <span class="sg-arrow">&rarr;</span>
+        <span class="sg-output">
+          <span class="sg-output-line"><span class="sg-result up">N<sub>0</sub>/2 &nbsp;+x</span></span>
+          <span class="sg-output-line"><span class="sg-result down">N<sub>0</sub>/2 &nbsp;&minus;x</span></span>
+        </span>
+      </div>
+
+      <div class="callout">
+        <p style="margin-bottom: 0;"><strong>Result: 50/50.</strong> Half come out spin-up-in-x, half come out spin-down-in-x. Knowing the z-spin tells you <em>nothing</em> about the x-spin. It's a coin flip. Also true if you start with spin-down-in-z: still 50/50 in x.</p>
+      </div>
+
+      <div class="callout-intuition">
+        <p style="margin-bottom: 0;"><strong>Intuition check:</strong> This alone isn't shocking. You might think z-spin and x-spin are just independent properties, like knowing someone's height tells you nothing about their eye color. Reasonable assumption. Experiment 3 will destroy it.</p>
+      </div>
+    </div>
+
+    <!-- Experiment 3 -->
+    <div class="exp-card devastating" data-exp="Experiment 3 &mdash; The Devastating One" id="exp-3">
+      <h3 style="margin-top: 0.25rem;">The Question That Erases</h3>
+
+      <p><strong>What you do:</strong> Take spin-up-in-z atoms. Pass them through SGx and select only the spin-up-in-x ones. Now pass <em>those</em> through a third device, SGz again.</p>
+
+      <p><strong>What you're asking:</strong> "I know they were spin-up in z. Then I additionally selected them as spin-up in x. If I check z again, surely they're still spin-up in z?"</p>
+
+      <div class="sg-diagram">
+        <span class="sg-box active">SGz</span>
+        <span class="sg-arrow">&rarr;</span>
+        <span class="sg-label">+z</span>
+        <span class="sg-arrow">&rarr;</span>
+        <span class="sg-label" style="color:#a1a1aa;">N<sub>0</sub></span>
+        <span class="sg-arrow">&rarr;</span>
+        <span class="sg-box block" style="border-color:#ef4444;color:#ef4444;">SGx<span style="font-size:0.6rem;display:block;color:#ef4444;">block &minus;x</span></span>
+        <span class="sg-arrow">&rarr;</span>
+        <span class="sg-label">+x only</span>
+        <span class="sg-arrow">&rarr;</span>
+        <span class="sg-label" style="color:#a1a1aa;">N<sub>0</sub>/2</span>
+        <span class="sg-arrow">&rarr;</span>
+        <span class="sg-box active">SGz</span>
+        <span class="sg-arrow">&rarr;</span>
+        <span class="sg-output">
+          <span class="sg-output-line"><span class="sg-result up">N<sub>0</sub>/4 &nbsp;+z</span></span>
+          <span class="sg-output-line"><span class="sg-result down">N<sub>0</sub>/4 &nbsp;&minus;z</span></span>
+        </span>
+      </div>
+
+      <div class="callout-devastating">
+        <p><strong>Result: 50/50 in z.</strong> Half come out spin-up, half spin-down.</p>
+        <p>You <em>knew</em> they were spin-up in z. That's how you selected them. But the x-measurement in the middle completely <strong>erased</strong> that knowledge. It's as if the z-measurement never happened.</p>
+        <p style="margin-bottom: 0;">This isn't an instrument limitation. It isn't noise. It's a law of nature.</p>
+      </div>
+
+      <div class="callout-intuition">
+        <p><strong>Why this is impossible classically:</strong> Think of a spinning top. It has angular momentum in all three directions simultaneously. You can measure L<sub>z</sub>, then L<sub>x</sub>, then L<sub>z</sub> again. The second L<sub>z</sub> measurement gives you the same number as the first. Learning L<sub>x</sub> doesn't disturb L<sub>z</sub>. The quantities coexist peacefully.</p>
+        <p style="margin-bottom: 0;">For the electron: they don't. You can't know S<sub>z</sub> and S<sub>x</sub> at the same time. Measuring one <strong>randomizes</strong> the other. These are called <strong>incompatible observables</strong>.</p>
+      </div>
+
+      <blockquote>"We cannot think of the beam entering the last SGz device as comprised of particles with $S_z = \hbar/2$ and $S_x = \hbar/2$."<br><span class="text-xs text-muted not-italic">&mdash; Townsend, p. 6</span></blockquote>
+    </div>
+
+    <!-- Experiment 4 -->
+    <div class="exp-card miracle" data-exp="Experiment 4 &mdash; The Miracle" id="exp-4">
+      <h3 style="margin-top: 0.25rem;">The Question You Don't Ask</h3>
+
+      <p><strong>What you do:</strong> Take spin-up-in-z atoms. Pass them through a <em>modified</em> SGx device (Feynman's design: three magnets that split the beam into +x and -x paths, then recombine them, <strong>without blocking either path</strong>). The atoms emerge from the modified device in a single recombined beam. Then pass that beam through SGz.</p>
+
+      <p><strong>The crucial difference from Experiment 3:</strong> In Experiment 3, you blocked the -x path, which means you <em>learned</em> which path each atom took (they all took the +x path). Here, both paths are open. You <em>don't know</em> which path any atom took. No measurement of S<sub>x</sub> is made.</p>
+
+      <div class="sg-diagram">
+        <span class="sg-box active">SGz</span>
+        <span class="sg-arrow">&rarr;</span>
+        <span class="sg-label">+z</span>
+        <span class="sg-arrow">&rarr;</span>
+        <span class="sg-label" style="color:#a1a1aa;">N<sub>0</sub></span>
+        <span class="sg-arrow">&rarr;</span>
+        <span class="sg-box mod">mod SGx<span style="font-size:0.6rem;display:block;color:#8b5cf6;">no block</span></span>
+        <span class="sg-arrow">&rarr;</span>
+        <span class="sg-box active">SGz</span>
+        <span class="sg-arrow">&rarr;</span>
+        <span class="sg-output">
+          <span class="sg-output-line"><span class="sg-result full">N<sub>0</sub> &nbsp;+z</span></span>
+          <span class="sg-output-line"><span class="sg-result" style="background:rgba(113,113,122,0.1);color:#525252;">0 &nbsp;&minus;z</span></span>
+        </span>
+      </div>
+
+      <div class="callout-result">
+        <p style="margin-bottom: 0;"><strong>Result: 100% spin-up in z.</strong> As if the modified SGx device weren't there at all. The z-information was perfectly preserved.</p>
+      </div>
+
+      <p>Let that sink in. <strong>The only difference between Experiments 3 and 4 is whether you look.</strong> Same magnets. Same beam. Same atoms. But if you block a path (learn which way the atom went), you get 50/50. If you don't block (don't learn), you get 100%.</p>
+
+      <div class="callout-intuition">
+        <p style="margin-bottom: 0;"><strong>The implication:</strong> Measurement isn't passive. It isn't "looking at what's already there." The act of extracting information about S<sub>x</sub> (by blocking one path) physically changes what happens to S<sub>z</sub>. Not looking at what's there; <em>creating what's there.</em></p>
+      </div>
+
+      <p>Townsend notes: even if you turn the beam intensity so low that only one atom at a time passes through the modified device, the result is the same. It's not about atoms interacting with each other. Each individual atom, somehow, takes both paths.</p>
+    </div>
+
+    <h3 id="why-classical-fails">Why Classical Probability Can't Explain Experiment 4</h3>
+
+    <p>Here's the argument, and it's the most important logical step in the chapter.</p>
+
+    <p>You might think: "Okay, the atoms in the modified SGx device are 50% spin-up-in-x and 50% spin-down-in-x. We just don't know which is which because we didn't block either path."</p>
+
+    <p>But if that were true, here's what would happen at the final SGz device:</p>
+
+    <ul>
+      <li>The 50% that are spin-up-in-x would give 50/50 in z (from Experiment 3)</li>
+      <li>The 50% that are spin-down-in-x would also give 50/50 in z (by symmetry)</li>
+      <li>Combined: 50/50 in z</li>
+    </ul>
+
+    <p>But we get 100% spin-up in z. Something is <strong>canceling</strong> the spin-down-in-z outcomes.</p>
+
+    <p>Classical probabilities can't cancel. Probabilities are always positive numbers between 0 and 1. If there's a 25% chance from one path and a 25% chance from another path, you get 50%, not 0%. Probabilities only add up.</p>
+
+    <div class="callout-devastating">
+      <p><strong>The resolution:</strong> Instead of probabilities (always positive, can only add), nature works with <strong>probability amplitudes</strong> (can be positive, negative, or complex, and can cancel). You add the amplitudes first, <em>then</em> square to get the probability.</p>
+      <p>The amplitude for "take the +x path and end up spin-down in z" and the amplitude for "take the -x path and end up spin-down in z" have opposite signs. They <strong>cancel</strong>. This is <strong>interference</strong>, the same phenomenon that makes waves cancel when crest meets trough.</p>
+      <p style="margin-bottom: 0;">This is the birth of quantum mechanics: <strong>add amplitudes, not probabilities.</strong></p>
+    </div>
+  </section>
+
+  <!-- Exercise 2: After Section 1.2 -->
+  <section id="exercises-2">
+    <div class="section-label" style="color: #22c55e;">Interactive Exercise</div>
+    <h2 style="color: #22c55e;">Try It: Simulate the Experiments</h2>
+
+    <p>This REPL has a Stern-Gerlach simulator. Run it to see all four experiments play out numerically. Then try your own sequences: What happens with SGy? What if you chain five devices?</p>
+
+    <div class="repl-container">
+      <div class="repl-header"><span class="dot"></span> Live Python (runs in your browser)</div>
+      <iframe class="repl-frame" style="height: 480px;"
+        src="https://jupyterlite.github.io/demo/repl/index.html?kernel=python&toolbar=1&theme=JupyterLab%20Dark&code=import%20numpy%20as%20np%0A%0A%23%20Quantum%20states%20(z-basis%3A%20%5Bamp_%2Bz%2C%20amp_-z%5D)%0Aup_z%20%3D%20np.array(%5B1%2C%200%5D%2C%20dtype%3Dcomplex)%0Adn_z%20%3D%20np.array(%5B0%2C%201%5D%2C%20dtype%3Dcomplex)%0Aup_x%20%3D%20np.array(%5B1%2C%201%5D%2C%20dtype%3Dcomplex)%20%2F%20np.sqrt(2)%0Adn_x%20%3D%20np.array(%5B1%2C-1%5D%2C%20dtype%3Dcomplex)%20%2F%20np.sqrt(2)%0Aup_y%20%3D%20np.array(%5B1%2C1j%5D%2C%20dtype%3Dcomplex)%20%2F%20np.sqrt(2)%0Adn_y%20%3D%20np.array(%5B1%2C-1j%5D%2C%20dtype%3Dcomplex)%20%2F%20np.sqrt(2)%0A%0Adef%20measure(state%2C%20axis%3D'z')%3A%0A%20%20%20%20b%20%3D%20%7B'z'%3A(up_z%2Cdn_z)%2C'x'%3A(up_x%2Cdn_x)%2C'y'%3A(up_y%2Cdn_y)%7D%5Baxis%5D%0A%20%20%20%20p_up%20%3D%20abs(np.vdot(b%5B0%5D%2Cstate))**2%0A%20%20%20%20p_dn%20%3D%20abs(np.vdot(b%5B1%5D%2Cstate))**2%0A%20%20%20%20print(f'%20%20P(%2B%7Baxis%7D)%3D%7Bp_up%3A.1%25%7D%20%20P(-%7Baxis%7D)%3D%7Bp_dn%3A.1%25%7D')%0A%20%20%20%20return%20b%5B0%5D%2C%20b%5B1%5D%0A%0Aprint('EXP%201%3A%20%7C%2Bz%E2%9F%A9%20%E2%86%92%20SGz')%0Ameasure(up_z%2C%20'z')%0Aprint('%5CnEXP%202%3A%20%7C%2Bz%E2%9F%A9%20%E2%86%92%20SGx')%0Ameasure(up_z%2C%20'x')%0Aprint('%5CnEXP%203%3A%20%7C%2Bz%E2%9F%A9%20%E2%86%92%20select%20%2Bx%20%E2%86%92%20SGz')%0Ameasure(up_x%2C%20'z')%0Aprint('%5CnEXP%204%3A%20%7C%2Bz%E2%9F%A9%20%E2%86%92%20mod%20SGx%20(no%20block)%20%E2%86%92%20SGz')%0Arecombined%20%3D%20(1%2Fnp.sqrt(2))*up_x%20%2B%20(1%2Fnp.sqrt(2))*dn_x%0Ameasure(recombined%2C%20'z')%0Aprint('%5Cn%E2%86%91%20Exp%203%20gives%2050%2F50.%20Exp%204%20gives%20100%2F0.')%0Aprint('Same%20device%2C%20different%20result.%20Only%20difference%3A%20blocking.')"
+      ></iframe>
+      <div class="repl-instructions">
+        All four experiments in one cell. After running, try: <code>measure(up_y, 'z')</code> or <code>measure(up_z, 'y')</code>. What happens when you measure y on a z-eigenstate?
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 1.3 -->
+  <section id="sec-1-3">
+    <div class="section-label">Section 1.3</div>
+    <h2>The Quantum State Vector <span class="text-muted font-normal text-base">(pp. 10-13)</span></h2>
+
+    <p>Now we need a mathematical language that can express everything we've seen. Townsend introduces it by analogy to something familiar: vectors.</p>
+
+    <h3 id="analogy">The Analogy That Works</h3>
+
+    <p>Think about how you describe an electric field in a room. The field <strong>E</strong> exists as a physical thing, independent of any coordinate system. But to <em>communicate</em> it, you pick a coordinate system (x, y, z axes) and express it as components:</p>
+
+    <p>$$\mathbf{E} = E_x\,\mathbf{i} + E_y\,\mathbf{j} + E_z\,\mathbf{k}$$</p>
+
+    <p>To get a component, you project: $E_x = \mathbf{i} \cdot \mathbf{E}$. That's the dot product. It answers: "how much of <strong>E</strong> points in the x-direction?"</p>
+
+    <div class="callout-physical">
+      <p style="margin-bottom: 0;"><strong>The quantum version is exactly the same idea.</strong> A quantum state $|\psi\rangle$ is like the field <strong>E</strong>, it exists as a thing. The basis states $|{+z}\rangle$ and $|{-z}\rangle$ are like the unit vectors <strong>i</strong> and <strong>j</strong>. The "components" are the probability amplitudes. The "dot product" is the inner product (bracket). Everything you know about vectors carries over.</p>
+    </div>
+
+    <p>The difference: ordinary vectors live in 3D space with real numbers. Quantum spin-1/2 vectors live in a 2D abstract space with <strong>complex</strong> numbers. But the structural logic, projection, basis, inner product, is identical.</p>
+
+    <h3 id="kets">Ket Vectors</h3>
+
+    <p>The state of a spin-1/2 particle is a vector in a 2D space. We write it as $|\psi\rangle$ ("ket psi"). In the z-basis:</p>
+
+    $$|\psi\rangle = c_+|{+z}\rangle + c_-|{-z}\rangle$$
+    <div class="eq-label">Eq 1.5</div>
+
+    <div class="callout-physical">
+      <p style="margin-bottom: 0;"><strong>Reading this:</strong> "The state $|\psi\rangle$ is $c_+$ parts spin-up-in-z and $c_-$ parts spin-down-in-z." The numbers $c_+$ and $c_-$ are complex numbers called <strong>probability amplitudes</strong>. They encode both "how much" and the phase information needed for interference.</p>
+    </div>
+
+    <p>The basis states $|{+z}\rangle$ and $|{-z}\rangle$ form a <strong>complete set</strong>: any spin state can be written as a combination of them. Just as any vector in the xy-plane can be written as a combination of <strong>i</strong> and <strong>j</strong>.</p>
+
+    <h3 id="bras">Bra Vectors and Inner Products</h3>
+
+    <p>For every ket $|\psi\rangle$ there's a <strong>bra</strong> $\langle\psi|$. A bra meeting a ket makes a <strong>bracket</strong> (bra-ket, get it?): $\langle\varphi|\psi\rangle$. This is the inner product, the quantum dot product.</p>
+
+    <p><strong>What does $\langle\varphi|\psi\rangle$ mean physically?</strong> It's the probability amplitude for a particle in state $|\psi\rangle$ to be found in state $|\varphi\rangle$. Square its magnitude to get the probability.</p>
+
+    <p><strong>Orthonormality</strong> (directly from the experiments):</p>
+
+    $$\langle +z|+z\rangle = 1, \quad \langle -z|-z\rangle = 1, \quad \langle -z|+z\rangle = 0, \quad \langle +z|-z\rangle = 0$$
+
+    <div class="callout-intuition">
+      <p style="margin-bottom: 0;"><strong>Why these values?</strong> They come directly from Experiment 1. A spin-up particle measured in z always gives spin-up (probability 1, so amplitude 1). It never gives spin-down (probability 0, so amplitude 0). This is the same as $\mathbf{i}\cdot\mathbf{i} = 1$ and $\mathbf{i}\cdot\mathbf{j} = 0$.</p>
+    </div>
+
+    <h4>Extracting amplitudes <span class="mono text-muted text-xs font-normal">(Eqs 1.6-1.7)</span></h4>
+
+    <p>Just as $E_x = \mathbf{i}\cdot\mathbf{E}$, we get the amplitude by taking the inner product with a basis state:</p>
+
+    $$c_+ = \langle +z|\psi\rangle, \qquad c_- = \langle -z|\psi\rangle$$
+    <div class="eq-label">Eq 1.6</div>
+
+    <p>Substituting back:</p>
+
+    $$|\psi\rangle = |{+z}\rangle\langle +z|\psi\rangle + |{-z}\rangle\langle -z|\psi\rangle$$
+    <div class="eq-label">Eq 1.7</div>
+
+    <div class="callout">
+      <p style="margin-bottom: 0;">This is exactly $\mathbf{E} = \mathbf{i}(\mathbf{i}\cdot\mathbf{E}) + \mathbf{j}(\mathbf{j}\cdot\mathbf{E}) + \mathbf{k}(\mathbf{k}\cdot\mathbf{E})$. Same structure. The kets are basis vectors, the brackets are projections.</p>
+    </div>
+
+    <h4>Bra from Ket <span class="mono text-muted text-xs font-normal">(Eq 1.13)</span></h4>
+
+    <p>To get the bra, flip every ket to a bra and <strong>complex conjugate</strong> every amplitude:</p>
+
+    $$\langle\psi| = c_+^*\langle +z| + c_-^*\langle -z|$$
+    <div class="eq-label">Eq 1.13</div>
+
+    <div class="callout-physical">
+      <p style="margin-bottom: 0;"><strong>Why the conjugate?</strong> Because when you compute $\langle\psi|\psi\rangle$ (the inner product of a state with itself), you need to get a real, positive number (it's a probability: the probability of finding the particle in its own state, which must be 1). Complex conjugation ensures this: $c^* \cdot c = |c|^2$, which is always real and non-negative.</p>
+    </div>
+
+    <h3 id="born-rule">The Born Rule <span class="mono text-muted text-xs font-normal">(Eq 1.15)</span></h3>
+
+    $$\langle\psi|\psi\rangle = |c_+|^2 + |c_-|^2 = 1$$
+    <div class="eq-label">Eq 1.15</div>
+
+    <p>The <strong>Born rule</strong>: $|\langle +z|\psi\rangle|^2$ = probability of measuring $S_z = +\hbar/2$.</p>
+
+    <div class="callout">
+      <p style="margin-bottom: 0;"><strong>Normalization</strong> just says: the probabilities of all possible outcomes must add up to 1. For spin-1/2, there are only two outcomes (up or down), so $|c_+|^2 + |c_-|^2 = 1$. This is why quantum states must be unit vectors.</p>
+    </div>
+
+    <p>When both amplitudes are nonzero, the particle is in a <strong>superposition</strong> of $|{+z}\rangle$ and $|{-z}\rangle$. This doesn't mean "we don't know which one it is." It means the particle genuinely has amplitude to be found in either state, and the relative phase between those amplitudes determines interference effects.</p>
+  </section>
+
+  <!-- Exercise 3: After Section 1.3 -->
+  <section id="exercises-3">
+    <div class="section-label" style="color: #22c55e;">Interactive Exercise</div>
+    <h2 style="color: #22c55e;">Try It: States &amp; Probabilities</h2>
+
+    <p>Build quantum states, compute probabilities, and verify normalization. The state from Example 1.1 is pre-loaded. Modify the amplitudes and see what changes.</p>
+
+    <div class="repl-container">
+      <div class="repl-header"><span class="dot"></span> Live Python (runs in your browser)</div>
+      <iframe class="repl-frame" style="height: 420px;"
+        src="https://jupyterlite.github.io/demo/repl/index.html?kernel=python&toolbar=1&theme=JupyterLab%20Dark&code=import%20numpy%20as%20np%0A%0A%23%20Example%201.1%3A%20%7C%CF%88%E2%9F%A9%20%3D%20(1%2F2)%7C%2Bz%E2%9F%A9%20%2B%20(i%E2%88%9A3%2F2)%7C-z%E2%9F%A9%0Ac_plus%20%3D%201%2F2%0Ac_minus%20%3D%201j%20*%20np.sqrt(3)%20%2F%202%0A%0A%23%20Probabilities%20(Born%20rule%3A%20square%20the%20magnitude)%0AP_up%20%3D%20abs(c_plus)**2%0AP_dn%20%3D%20abs(c_minus)**2%0A%0Aprint(f'c%2B%20%3D%20%7Bc_plus%7D')%0Aprint(f'c-%20%3D%20%7Bc_minus%3A.4f%7D')%0Aprint(f'%7Cc%2B%7C%C2%B2%20%3D%20%7BP_up%3A.4f%7D%20%20(%7BP_up*100%3A.0f%7D%25%20chance%20of%20%2Bz)')%0Aprint(f'%7Cc-%7C%C2%B2%20%3D%20%7BP_dn%3A.4f%7D%20%20(%7BP_dn*100%3A.0f%7D%25%20chance%20of%20-z)')%0Aprint(f'Sum%20%3D%20%7BP_up%20%2B%20P_dn%3A.4f%7D%20(must%20be%201)')%0Aprint()%0Aprint('Try%20your%20own!%20Change%20c_plus%20and%20c_minus%20above.')%0Aprint('For%2090%2F10%20split%3A%20c_plus%20%3D%20np.sqrt(0.9)%2C%20c_minus%20%3D%20np.sqrt(0.1)')%0Aprint('Add%20a%20phase%3A%20c_minus%20%3D%201j%20*%20np.sqrt(0.1)%20%E2%80%94%20same%20P!%20but%20different%20state')"
+      ></iframe>
+      <div class="repl-instructions">
+        Exercises: (1) Make a 90/10 state. (2) Make a 50/50 state with a phase: <code>c_minus = 1j/np.sqrt(2)</code>. (3) What happens if the amplitudes don't normalize to 1?
+      </div>
+    </div>
+  </section>
+
+  <!-- Example 1.1 -->
+  <section id="example">
+    <div class="section-label">Worked Example</div>
+    <h2>The Math, Worked <span class="text-muted font-normal text-base">(Example 1.1)</span></h2>
+
+    <p><strong>Given:</strong> A particle in the state</p>
+    $$|\psi\rangle = \frac{1}{2}|{+z}\rangle + \frac{i\sqrt{3}}{2}|{-z}\rangle$$
+
+    <p>What are the possible results of measuring $S_z$ and their probabilities?</p>
+
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <p><strong>Read off the amplitudes.</strong> Just look at the coefficients in front of each basis state.</p>
+        <p>$c_+ = \langle +z|\psi\rangle = \dfrac{1}{2}$, &ensp; $c_- = \langle -z|\psi\rangle = \dfrac{i\sqrt{3}}{2}$</p>
+        <div class="callout-physical">
+          <p style="margin-bottom: 0;">Note that $c_-$ is imaginary. That's fine. Amplitudes are complex numbers. The $i$ is carrying phase information that matters for interference but won't affect this particular probability calculation.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <p><strong>Square the magnitudes to get probabilities.</strong> For complex numbers, $|c|^2 = c^* \cdot c$ (multiply by the conjugate).</p>
+        $$P(+z) = |c_+|^2 = \left|\frac{1}{2}\right|^2 = \frac{1}{4} = 25\%$$
+        <p>For $c_- = i\sqrt{3}/2$, the conjugate is $c_-^* = -i\sqrt{3}/2$:</p>
+        $$P(-z) = |c_-|^2 = \left(\frac{-i\sqrt{3}}{2}\right)\!\left(\frac{i\sqrt{3}}{2}\right) = \frac{3}{4} = 75\%$$
+        <div class="callout-intuition">
+          <p style="margin-bottom: 0;"><strong>What happened to the $i$?</strong> When you multiply a complex number by its conjugate, the imaginary parts always cancel: $(-i)(i) = -i^2 = -(-1) = 1$. So $|i\sqrt{3}/2|^2 = 3/4$, just as if the amplitude had been real. Phases wash out of individual probabilities. They only matter when amplitudes <em>combine</em> (interference).</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <p><strong>Verify normalization.</strong></p>
+        <p>$1/4 + 3/4 = 1$ &ensp; &#10003;</p>
+        <p>If this didn't equal 1, either the state wasn't properly normalized or we made an arithmetic error.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Seminar Questions -->
+  <section id="questions">
+    <div class="section-label">Preparation</div>
+    <h2>Seminar Questions</h2>
+    <p>Things Pesic might push on. Click to reveal the answer, but try to answer yourself first.</p>
+
+    <div class="q-card">
+      <div class="q-header" onclick="this.parentElement.classList.toggle('open')">
+        <span class="q-num">Q1</span>
+        <span class="q-text">Why does the field need to be inhomogeneous?</span>
+        <span class="q-toggle">&#9662;</span>
+      </div>
+      <div class="q-body">
+        <p>A uniform field would twist the atom (torque it to align with the field) but wouldn't push it in any direction. Torque without force means the atom spins but doesn't move. You need the field strength to <em>change across space</em> (a gradient) for there to be a net force that pushes the atom up or down. The sharp tip on one pole piece creates this gradient. Mathematically: $F_z = \mu_z (\partial B_z / \partial z)$. If $\partial B_z / \partial z = 0$ (uniform field), $F_z = 0$.</p>
+      </div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-header" onclick="this.parentElement.classList.toggle('open')">
+        <span class="q-num">Q2</span>
+        <span class="q-text">What's the difference between Experiments 3 and 4?</span>
+        <span class="q-toggle">&#9662;</span>
+      </div>
+      <div class="q-body">
+        <p>Whether you block a path, which is to say, whether you extract information about S<sub>x</sub>. Both experiments have an SGx device in the middle. In Exp 3, one output is blocked (you learn S<sub>x</sub>). In Exp 4, both paths recombine (you don't learn S<sub>x</sub>). The magnets are the same; it's the <em>information extraction</em> that changes the outcome. Blocking = measuring = 50/50 in z. Not blocking = not measuring = 100% +z.</p>
+      </div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-header" onclick="this.parentElement.classList.toggle('open')">
+        <span class="q-num">Q3</span>
+        <span class="q-text">Why can't we use classical probabilities for Experiment 4?</span>
+        <span class="q-toggle">&#9662;</span>
+      </div>
+      <div class="q-body">
+        <p>If particles "really were" 50% +x and 50% &minus;x, classical probability says: each group gives 50/50 in z (Exp 3), combined = 50/50. But we see 100% +z. The &minus;z outcomes must be canceling. Probabilities are always positive and can only add (0.25 + 0.25 = 0.5, never 0). Only amplitudes, which can be positive, negative, or complex, can cancel (destructive interference). You must add amplitudes first, then square.</p>
+      </div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-header" onclick="this.parentElement.classList.toggle('open')">
+        <span class="q-num">Q4</span>
+        <span class="q-text">What does the SG experiment tell us about spin?</span>
+        <span class="q-toggle">&#9662;</span>
+      </div>
+      <div class="q-body">
+        <p>Spin isn't a little ball rotating. If it were: (a) $\mu_z$ would be continuous, not discrete (random orientations would give a smear, not two spots); (b) the g-factor would be 1, not 2; (c) the surface of the electron would have to exceed the speed of light. The word "spin" is a historical misnomer. The electron simply <em>has</em> an intrinsic magnetic property that is quantized.</p>
+      </div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-header" onclick="this.parentElement.classList.toggle('open')">
+        <span class="q-num">Q5</span>
+        <span class="q-text">What is a quantum state?</span>
+        <span class="q-toggle">&#9662;</span>
+      </div>
+      <div class="q-body">
+        <p>A vector in an abstract space. Not a list of properties the particle "has." It's a complete specification of the probability amplitudes for all possible measurement outcomes. The state $|\psi\rangle$ encodes everything that can be known, but "everything that can be known" may still leave individual measurements probabilistic. A particle in a definite, known state can still give random results. The randomness isn't from ignorance, it's fundamental.</p>
+      </div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-header" onclick="this.parentElement.classList.toggle('open')">
+        <span class="q-num">Q6</span>
+        <span class="q-text">Why do we need complex numbers?</span>
+        <span class="q-toggle">&#9662;</span>
+      </div>
+      <div class="q-body">
+        <p>Because there are three spatial directions (x, y, z) but only two spin states. Expressing $|{+x}\rangle$ in terms of $|{+z}\rangle$ and $|{-z}\rangle$ can be done with real numbers ($1/\sqrt{2}$ each). But expressing $|{+y}\rangle$ in the z-basis <em>requires</em> an $i$ (eq 1.30: the coefficient of $|{-z}\rangle$ is $i/\sqrt{2}$). Real amplitudes can't capture all the symmetries of 3D rotations in a 2D vector space. The $i$ is doing essential geometric work, not a mathematical convenience.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Philosophical -->
+  <section id="philosophical">
+    <div class="section-label">The Deeper Thread</div>
+    <h2>Why This Matters</h2>
+
+    <p>The Stern-Gerlach experiments establish three things that every later development in quantum mechanics rests on:</p>
+
+    <ol>
+      <li><strong>Quantization.</strong> Some physical quantities don't come in continuous amounts. Spin along any axis takes only two values. This discreteness is not imposed by the theory; it's read directly off the detector plate.</li>
+      <li><strong>Incompatibility.</strong> Some pairs of questions can't both be answered. Knowing S<sub>z</sub> with certainty means S<sub>x</sub> is completely random. This isn't about instrument limitations. It's a structural feature of nature.</li>
+      <li><strong>Measurement as creation.</strong> Before you measure S<sub>z</sub>, the atom doesn't "have" a definite S<sub>z</sub> that you're discovering. The measurement brings the value into existence. The name creates the thing.</li>
+    </ol>
+
+    <p>That third point is the deepest. It's also the one that connects to everything else you're reading right now.</p>
+
+    <div class="callout-intuition">
+      <p style="margin-bottom: 0;">Benjamin (via Molitor, via the Kabbalistic philosophy of language): the name participates in the thing it names. Language is not representation but medium. The word doesn't point at a pre-existing reality; it calls reality forth.</p>
+      <p style="margin-top: 0.75rem; margin-bottom: 0;">The SG experiment: the measurement doesn't reveal a pre-existing spin value; it calls the value into existence. The atom passing through the magnet is not being observed; it is being <em>named</em>, and the name is constitutive.</p>
+    </div>
+
+    <p>This is the same structure, arrived at from opposite directions. Benjamin from the philosophical tradition, Stern and Gerlach from the laboratory. The convergence is not a metaphor. It's a claim about the nature of determinacy itself.</p>
+  </section>
+
+  <div style="height: 4rem;"></div>
+
+</main>
+
+<script>
+  const sections = document.querySelectorAll('section[id], h3[id], h4[id]');
+  const navLinks = document.querySelectorAll('.nav-link');
+
+  function updateActiveNav() {
+    let current = '';
+    const scrollY = window.scrollY + 120;
+    sections.forEach(section => {
+      if (section.offsetTop <= scrollY) {
+        current = section.getAttribute('id');
+      }
+    });
+    navLinks.forEach(link => {
+      link.classList.remove('active');
+      const href = link.getAttribute('href');
+      if (href && href.substring(1) === current) {
+        link.classList.add('active');
+      }
+    });
+  }
+
+  window.addEventListener('scroll', updateActiveNav, { passive: true });
+  updateActiveNav();
+</script>
+</body>
+</html>
