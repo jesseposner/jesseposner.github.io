@@ -384,12 +384,17 @@ tailwind.config = {
       <p style="margin-bottom: 0.5rem;">The green "Live Python" boxes scattered throughout this page run Python directly in your web browser using a technology called JupyterLite (Python compiled to WebAssembly). No downloads, no setup, no command line. It works like this:</p>
       <ol style="margin-bottom: 0;">
         <li><strong>Scroll down</strong> to any green exercise section. You'll see a dark box with a green header that says "Live Python (runs in your browser)."</li>
-        <li><strong>Wait ~10 seconds</strong> the first time. It's downloading a small Python runtime to your browser. You'll see a blinking cursor when it's ready.</li>
-        <li><strong>Click inside</strong> the dark area where the code is.</li>
+        <li><strong>Wait ~10-20 seconds</strong> the first time. It's downloading a small Python runtime to your browser. <strong>You must wait until you see a blinking cursor</strong> before typing. If you only see a dark box with no cursor, it's still loading.</li>
+        <li><strong>Click inside</strong> the dark area where the blinking cursor is.</li>
         <li><strong>Press Shift+Enter</strong> to run the code. Output appears below.</li>
         <li><strong>Edit anything</strong> and press Shift+Enter again to re-run with your changes.</li>
       </ol>
-      <p style="margin-top: 0.5rem; margin-bottom: 0;">That's it. If the box doesn't load, try a different browser (Chrome or Firefox work best) or check that your browser isn't blocking third-party content. The exercises are optional enrichment: the reading and explanations stand on their own without them.</p>
+      <p style="margin-top: 0.75rem; margin-bottom: 0.5rem;"><strong>Trouble? Microsoft Edge often blocks these exercises.</strong> Edge's tracking prevention blocks the embedded Python from loading. Two options:</p>
+      <ul style="margin-bottom: 0;">
+        <li><strong>Option A (easiest):</strong> Open this page in <strong>Chrome</strong> or <strong>Firefox</strong> instead. Copy-paste the URL into a different browser.</li>
+        <li><strong>Option B:</strong> Use the "Open in new tab" links below each exercise. These open the Python environment directly (not embedded), which works in any browser.</li>
+      </ul>
+      <p style="margin-top: 0.5rem; margin-bottom: 0;">The exercises are optional enrichment: the reading and explanations stand on their own without them.</p>
     </div>
 
     <p>If electromagnetism feels shaky, start with "Before the Lab," which builds charge, magnetism, and their connection from pure physical reasoning. Then "The Lab" builds the experiment. Once the physical picture is solid, the math in later sections just writes down what you already understand.</p>
@@ -641,16 +646,66 @@ tailwind.config = {
     <div class="section-label" style="color: #22c55e;">Interactive Exercise</div>
     <h2 style="color: #22c55e;">Try It: Forces &amp; Deflection</h2>
 
-    <p>Use the live Python REPL below to compute the magnetic moment and force on a silver atom. The code is pre-loaded; hit <strong>Shift+Enter</strong> to run each block. Modify the values and re-run to build intuition.</p>
+    <p>The Python environment below has the physical constants pre-loaded (it runs automatically when the page loads). The top pane shows what already ran. <strong>Your job is to type commands in the input bar at the bottom</strong> and press Shift+Enter to run each one.</p>
 
     <div class="repl-container">
       <div class="repl-header"><span class="dot"></span> Live Python (runs in your browser)</div>
       <iframe class="repl-frame"
-        src="https://jupyterlite.github.io/demo/repl/index.html?kernel=python&toolbar=1&theme=JupyterLab%20Dark&code=import%20numpy%20as%20np%0A%0A%23%20Constants%20(Gaussian%20units)%0Ahbar%20%3D%201.055e-27%20%20%20%23%20erg%C2%B7s%0Ae%20%3D%204.803e-10%20%20%20%20%20%23%20esu%0Am_e%20%3D%209.109e-28%20%20%20%23%20grams%0Ac%20%3D%202.998e10%20%20%20%20%20%23%20cm%2Fs%0Ag%20%3D%202.00%0A%0A%23%20Magnetic%20moment%20for%20spin-up%20(S_z%20%3D%20%2Bhbar%2F2)%0AS_z%20%3D%20hbar%20%2F%202%0Amu_z%20%3D%20(g%20*%20(-e))%20%2F%20(2%20*%20m_e%20*%20c)%20*%20S_z%0Aprint(f'mu_z%20for%20spin-up%20%3D%20%7Bmu_z%3A.4e%7D%20erg%2Fgauss')%0Aprint(f'Sign%20is%20NEGATIVE%20(electron%20charge%20is%20negative)')%0Aprint()%0A%0A%23%20Force%3A%20F_z%20%3D%20mu_z%20*%20dB_z%2Fdz%0A%23%20With%20sharp%20tip%20on%20N%20pole%3A%20dB_z%2Fdz%20%3C%200%0AdBdz%20%3D%20-1000%20%20%23%20gauss%2Fcm%20(typical%20value)%0AF_z%20%3D%20mu_z%20*%20dBdz%0Aprint(f'dB_z%2Fdz%20%3D%20%7BdBdz%7D%20gauss%2Fcm')%0Aprint(f'F_z%20%3D%20%7BF_z%3A.4e%7D%20dynes')%0Aprint(f'Force%20is%20POSITIVE%20%E2%86%92%20spin-up%20deflects%20UP')%0Aprint()%0A%0A%23%20Now%20try%20spin-down!%20Change%20S_z%20to%20-hbar%2F2%0A%23%20and%20re-run%20to%20see%20it%20deflect%20the%20other%20way"
+        src="https://jupyterlite.github.io/demo/repl/index.html?kernel=python&toolbar=1&theme=JupyterLab%20Dark&code=import%20numpy%20as%20np%0Ahbar%20%3D%201.055e-27%20%20%20%23%20reduced%20Planck%20constant%20(erg%C2%B7s)%0Ae%20%3D%204.803e-10%20%20%20%20%20%23%20electron%20charge%20(esu)%0Am_e%20%3D%209.109e-28%20%20%20%23%20electron%20mass%20(grams)%0Ac%20%3D%202.998e10%20%20%20%20%20%23%20speed%20of%20light%20(cm%2Fs)%0Ag%20%3D%202.00%20%20%20%20%20%20%20%20%20%20%23%20electron%20g-factor%0Aprint('Constants%20loaded.%20Ready!%20Follow%20the%20steps%20below.')"
       ></iframe>
       <div class="repl-instructions">
-        First load may take ~10s (downloading Python to your browser). Type code and Shift+Enter to run. Try changing <code>S_z = -hbar / 2</code> for spin-down.
+        Wait for "Constants loaded. Ready!" in the top pane, then follow the steps below.
       </div>
+    </div>
+
+    <p>Now type each line in the input bar and press <strong>Shift+Enter</strong> after each one. Read what comes back before moving on.</p>
+
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <p><strong>Compute the spin angular momentum for spin-up.</strong> Type this and press Shift+Enter:</p>
+        <p><code>S_z = hbar / 2</code></p>
+        <p>No output, that's normal. You just stored a value. Now check it:</p>
+        <p><code>print(f'S_z = {S_z:.4e} erg-seconds')</code></p>
+        <p>You should see: <code>S_z = 5.2750e-28 erg-seconds</code></p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <p><strong>Compute the magnetic moment.</strong> This is Eq 1.3 from the reading: $\mu_z = \frac{gq}{2m_ec}S_z$</p>
+        <p><code>mu_z = (g * (-e)) / (2 * m_e * c) * S_z</code></p>
+        <p><code>print(f'mu_z = {mu_z:.4e} erg/gauss')</code></p>
+        <p>You should see a <strong>negative</strong> number. <em>Why negative?</em> Because the electron's charge is negative ($-e$), so its magnetic moment points opposite to its spin. Spin up, but magnetic moment down.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <p><strong>Compute the force in the SG apparatus.</strong> This is Eq 1.4: $F_z = \mu_z \frac{\partial B_z}{\partial z}$</p>
+        <p><code>dBdz = -1000</code></p>
+        <p><code>F_z = mu_z * dBdz</code></p>
+        <p><code>print(f'F_z = {F_z:.4e} dynes')</code></p>
+        <p>You should see a <strong>positive</strong> number. Negative times negative = positive. <em>Spin-up atoms get pushed up.</em> The signs work out.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <p><strong>Now try spin-down.</strong> Change the spin to $S_z = -\hbar/2$ and redo the calculation:</p>
+        <p><code>S_z = -hbar / 2</code></p>
+        <p><code>mu_z = (g * (-e)) / (2 * m_e * c) * S_z</code></p>
+        <p><code>F_z = mu_z * dBdz</code></p>
+        <p><code>print(f'F_z = {F_z:.4e} dynes')</code></p>
+        <p>What sign is the force now? Does it make sense that spin-down atoms deflect downward?</p>
+      </div>
+    </div>
+
+    <div class="callout-result">
+      <p style="margin-bottom: 0;"><strong>What you just did:</strong> You computed the full chain from Section 1.1: spin &rarr; magnetic moment &rarr; force, for both spin-up and spin-down. The magnet pushes them in opposite directions. Two spots on the detector, not a smear.</p>
     </div>
   </section>
 
@@ -840,16 +895,73 @@ tailwind.config = {
     <div class="section-label" style="color: #22c55e;">Interactive Exercise</div>
     <h2 style="color: #22c55e;">Try It: Simulate the Experiments</h2>
 
-    <p>This REPL has a Stern-Gerlach simulator. Run it to see all four experiments play out numerically. Then try your own sequences: What happens with SGy? What if you chain five devices?</p>
+    <p>This REPL pre-loads quantum states and a <code>measure()</code> function. You'll use them to replay each experiment and see the numbers confirm what the reading describes.</p>
 
     <div class="repl-container">
       <div class="repl-header"><span class="dot"></span> Live Python (runs in your browser)</div>
-      <iframe class="repl-frame" style="height: 480px;"
-        src="https://jupyterlite.github.io/demo/repl/index.html?kernel=python&toolbar=1&theme=JupyterLab%20Dark&code=import%20numpy%20as%20np%0A%0A%23%20Quantum%20states%20(z-basis%3A%20%5Bamp_%2Bz%2C%20amp_-z%5D)%0Aup_z%20%3D%20np.array(%5B1%2C%200%5D%2C%20dtype%3Dcomplex)%0Adn_z%20%3D%20np.array(%5B0%2C%201%5D%2C%20dtype%3Dcomplex)%0Aup_x%20%3D%20np.array(%5B1%2C%201%5D%2C%20dtype%3Dcomplex)%20%2F%20np.sqrt(2)%0Adn_x%20%3D%20np.array(%5B1%2C-1%5D%2C%20dtype%3Dcomplex)%20%2F%20np.sqrt(2)%0Aup_y%20%3D%20np.array(%5B1%2C1j%5D%2C%20dtype%3Dcomplex)%20%2F%20np.sqrt(2)%0Adn_y%20%3D%20np.array(%5B1%2C-1j%5D%2C%20dtype%3Dcomplex)%20%2F%20np.sqrt(2)%0A%0Adef%20measure(state%2C%20axis%3D'z')%3A%0A%20%20%20%20b%20%3D%20%7B'z'%3A(up_z%2Cdn_z)%2C'x'%3A(up_x%2Cdn_x)%2C'y'%3A(up_y%2Cdn_y)%7D%5Baxis%5D%0A%20%20%20%20p_up%20%3D%20abs(np.vdot(b%5B0%5D%2Cstate))**2%0A%20%20%20%20p_dn%20%3D%20abs(np.vdot(b%5B1%5D%2Cstate))**2%0A%20%20%20%20print(f'%20%20P(%2B%7Baxis%7D)%3D%7Bp_up%3A.1%25%7D%20%20P(-%7Baxis%7D)%3D%7Bp_dn%3A.1%25%7D')%0A%20%20%20%20return%20b%5B0%5D%2C%20b%5B1%5D%0A%0Aprint('EXP%201%3A%20%7C%2Bz%E2%9F%A9%20%E2%86%92%20SGz')%0Ameasure(up_z%2C%20'z')%0Aprint('%5CnEXP%202%3A%20%7C%2Bz%E2%9F%A9%20%E2%86%92%20SGx')%0Ameasure(up_z%2C%20'x')%0Aprint('%5CnEXP%203%3A%20%7C%2Bz%E2%9F%A9%20%E2%86%92%20select%20%2Bx%20%E2%86%92%20SGz')%0Ameasure(up_x%2C%20'z')%0Aprint('%5CnEXP%204%3A%20%7C%2Bz%E2%9F%A9%20%E2%86%92%20mod%20SGx%20(no%20block)%20%E2%86%92%20SGz')%0Arecombined%20%3D%20(1%2Fnp.sqrt(2))*up_x%20%2B%20(1%2Fnp.sqrt(2))*dn_x%0Ameasure(recombined%2C%20'z')%0Aprint('%5Cn%E2%86%91%20Exp%203%20gives%2050%2F50.%20Exp%204%20gives%20100%2F0.')%0Aprint('Same%20device%2C%20different%20result.%20Only%20difference%3A%20blocking.')"
+      <iframe class="repl-frame" style="height: 360px;"
+        src="https://jupyterlite.github.io/demo/repl/index.html?kernel=python&toolbar=1&theme=JupyterLab%20Dark&code=import%20numpy%20as%20np%0Aup_z%20%3D%20np.array(%5B1%2C%200%5D%2C%20dtype%3Dcomplex)%0Adn_z%20%3D%20np.array(%5B0%2C%201%5D%2C%20dtype%3Dcomplex)%0Aup_x%20%3D%20np.array(%5B1%2C%201%5D%2C%20dtype%3Dcomplex)%20%2F%20np.sqrt(2)%0Adn_x%20%3D%20np.array(%5B1%2C-1%5D%2C%20dtype%3Dcomplex)%20%2F%20np.sqrt(2)%0Aup_y%20%3D%20np.array(%5B1%2C1j%5D%2C%20dtype%3Dcomplex)%20%2F%20np.sqrt(2)%0Adn_y%20%3D%20np.array(%5B1%2C-1j%5D%2C%20dtype%3Dcomplex)%20%2F%20np.sqrt(2)%0A%0Adef%20measure(state%2C%20axis%3D'z')%3A%0A%20%20%20%20bases%20%3D%20%7B'z'%3A(up_z%2Cdn_z)%2C'x'%3A(up_x%2Cdn_x)%2C'y'%3A(up_y%2Cdn_y)%7D%0A%20%20%20%20b%20%3D%20bases%5Baxis%5D%0A%20%20%20%20p_up%20%3D%20abs(np.vdot(b%5B0%5D%2Cstate))**2%0A%20%20%20%20p_dn%20%3D%20abs(np.vdot(b%5B1%5D%2Cstate))**2%0A%20%20%20%20print(f'%20%20P(%2B%7Baxis%7D)%20%3D%20%7Bp_up%3A6.1%25%7D%20%20%20P(-%7Baxis%7D)%20%3D%20%7Bp_dn%3A6.1%25%7D')%0A%20%20%20%20return%20b%0A%0Aprint('Simulator%20ready!%20States%20loaded%3A%20up_z%2C%20dn_z%2C%20up_x%2C%20dn_x%2C%20up_y%2C%20dn_y')%0Aprint('Function%20loaded%3A%20measure(state%2C%20axis)')%0Aprint('Follow%20the%20steps%20below.')"
       ></iframe>
       <div class="repl-instructions">
-        All four experiments in one cell. After running, try: <code>measure(up_y, 'z')</code> or <code>measure(up_z, 'y')</code>. What happens when you measure y on a z-eigenstate?
+        Wait for "Simulator ready!" then follow the steps below. Type each line in the input bar and press Shift+Enter.
       </div>
+    </div>
+
+    <p>The simulator is ready. Now replay each experiment by typing commands in the input bar.</p>
+
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <p><strong>Experiment 1: Same question twice.</strong> Start with a spin-up-in-z atom. Measure z.</p>
+        <p><code>measure(up_z, 'z')</code></p>
+        <p>You should see: <code>P(+z) = 100.0%   P(-z) =   0.0%</code></p>
+        <p>100% spin-up, 0% spin-down. Ask the same question, get the same answer. No surprise.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <p><strong>Experiment 2: A different question.</strong> Same spin-up-in-z atom. Now measure x instead.</p>
+        <p><code>measure(up_z, 'x')</code></p>
+        <p>You should see: <code>P(+x) =  50.0%   P(-x) =  50.0%</code></p>
+        <p>Complete coin flip. Knowing z tells you nothing about x.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <p><strong>Experiment 3: The devastating one.</strong> You selected +z, then selected +x (blocking -x). Now measure z on that +x state.</p>
+        <p><code>measure(up_x, 'z')</code></p>
+        <p>You should see: <code>P(+z) =  50.0%   P(-z) =  50.0%</code></p>
+        <p>50/50. The x-measurement <em>erased</em> the z-information. They were definitely spin-up in z before. Now it's a coin flip. Think about why.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <p><strong>Experiment 4: The miracle.</strong> This time we don't block either x-path. The +x and -x beams recombine. To simulate recombination, we add the amplitudes:</p>
+        <p><code>recombined = (1/np.sqrt(2))*up_x + (1/np.sqrt(2))*dn_x</code></p>
+        <p><code>measure(recombined, 'z')</code></p>
+        <p>You should see: <code>P(+z) = 100.0%   P(-z) =   0.0%</code></p>
+        <p><strong>100% spin-up again.</strong> Same magnets as Experiment 3, but we didn't block a path, and the z-information is perfectly preserved. The only difference: whether we looked.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">5</div>
+      <div class="step-content">
+        <p><strong>Explore on your own.</strong> Try any of these:</p>
+        <p><code>measure(up_z, 'y')</code> &mdash; what does a z-eigenstate look like measured in y?</p>
+        <p><code>measure(up_y, 'z')</code> &mdash; what about the reverse?</p>
+        <p><code>measure(up_y, 'x')</code> &mdash; are x and y also incompatible?</p>
+      </div>
+    </div>
+
+    <div class="callout-result">
+      <p style="margin-bottom: 0;"><strong>What you just saw:</strong> Experiments 3 and 4 use the same magnets, same beam, same atoms. The only difference is whether you extract information about S<sub>x</sub> (by blocking a path). Blocking = 50/50. Not blocking = 100%. Classical probabilities can't produce this. Amplitudes can.</p>
     </div>
   </section>
 
@@ -947,16 +1059,75 @@ tailwind.config = {
     <div class="section-label" style="color: #22c55e;">Interactive Exercise</div>
     <h2 style="color: #22c55e;">Try It: States &amp; Probabilities</h2>
 
-    <p>Build quantum states, compute probabilities, and verify normalization. The state from Example 1.1 is pre-loaded. Modify the amplitudes and see what changes.</p>
+    <p>Now you'll build quantum states by hand, compute probabilities using the Born rule, and see what phase does (and doesn't) do.</p>
 
     <div class="repl-container">
       <div class="repl-header"><span class="dot"></span> Live Python (runs in your browser)</div>
-      <iframe class="repl-frame" style="height: 420px;"
-        src="https://jupyterlite.github.io/demo/repl/index.html?kernel=python&toolbar=1&theme=JupyterLab%20Dark&code=import%20numpy%20as%20np%0A%0A%23%20Example%201.1%3A%20%7C%CF%88%E2%9F%A9%20%3D%20(1%2F2)%7C%2Bz%E2%9F%A9%20%2B%20(i%E2%88%9A3%2F2)%7C-z%E2%9F%A9%0Ac_plus%20%3D%201%2F2%0Ac_minus%20%3D%201j%20*%20np.sqrt(3)%20%2F%202%0A%0A%23%20Probabilities%20(Born%20rule%3A%20square%20the%20magnitude)%0AP_up%20%3D%20abs(c_plus)**2%0AP_dn%20%3D%20abs(c_minus)**2%0A%0Aprint(f'c%2B%20%3D%20%7Bc_plus%7D')%0Aprint(f'c-%20%3D%20%7Bc_minus%3A.4f%7D')%0Aprint(f'%7Cc%2B%7C%C2%B2%20%3D%20%7BP_up%3A.4f%7D%20%20(%7BP_up*100%3A.0f%7D%25%20chance%20of%20%2Bz)')%0Aprint(f'%7Cc-%7C%C2%B2%20%3D%20%7BP_dn%3A.4f%7D%20%20(%7BP_dn*100%3A.0f%7D%25%20chance%20of%20-z)')%0Aprint(f'Sum%20%3D%20%7BP_up%20%2B%20P_dn%3A.4f%7D%20(must%20be%201)')%0Aprint()%0Aprint('Try%20your%20own!%20Change%20c_plus%20and%20c_minus%20above.')%0Aprint('For%2090%2F10%20split%3A%20c_plus%20%3D%20np.sqrt(0.9)%2C%20c_minus%20%3D%20np.sqrt(0.1)')%0Aprint('Add%20a%20phase%3A%20c_minus%20%3D%201j%20*%20np.sqrt(0.1)%20%E2%80%94%20same%20P!%20but%20different%20state')"
+      <iframe class="repl-frame" style="height: 300px;"
+        src="https://jupyterlite.github.io/demo/repl/index.html?kernel=python&toolbar=1&theme=JupyterLab%20Dark&code=import%20numpy%20as%20np%0Aprint('numpy%20loaded.%20Follow%20the%20steps%20below.')"
       ></iframe>
       <div class="repl-instructions">
-        Exercises: (1) Make a 90/10 state. (2) Make a 50/50 state with a phase: <code>c_minus = 1j/np.sqrt(2)</code>. (3) What happens if the amplitudes don't normalize to 1?
+        Wait for "numpy loaded." then follow the steps below.
       </div>
+    </div>
+
+    <p>Work through Example 1.1 from the textbook, step by step.</p>
+
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <p><strong>Define the state from Example 1.1:</strong> $|\psi\rangle = \frac{1}{2}|{+z}\rangle + \frac{i\sqrt{3}}{2}|{-z}\rangle$</p>
+        <p><code>c_plus = 1/2</code></p>
+        <p><code>c_minus = 1j * np.sqrt(3) / 2</code></p>
+        <p>Note: <code>1j</code> is Python's way of writing the imaginary number $i$.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <p><strong>Apply the Born rule.</strong> Probability = square the magnitude of the amplitude.</p>
+        <p><code>P_up = abs(c_plus)**2</code></p>
+        <p><code>P_dn = abs(c_minus)**2</code></p>
+        <p><code>print(f'P(+z) = {P_up:.0%}')</code></p>
+        <p><code>print(f'P(-z) = {P_dn:.0%}')</code></p>
+        <p>You should see: 25% and 75%. A measurement of this state is three times more likely to give spin-down than spin-up.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <p><strong>Check normalization.</strong> Probabilities must sum to 1.</p>
+        <p><code>print(f'Sum = {P_up + P_dn}')</code></p>
+        <p>If this isn't 1.0, something went wrong.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <p><strong>What does phase do?</strong> Change the amplitude to be real instead of imaginary:</p>
+        <p><code>c_minus_real = np.sqrt(3) / 2</code></p>
+        <p><code>print(f'P(-z) with i:       {abs(1j * np.sqrt(3)/2)**2:.0%}')</code></p>
+        <p><code>print(f'P(-z) without i:    {abs(np.sqrt(3)/2)**2:.0%}')</code></p>
+        <p>Same probability! The $i$ doesn't affect the Born rule for a single measurement. So why is it there? Because it matters when amplitudes <em>combine</em>, which is exactly what happened in Experiment 4 (interference). Phase is invisible to individual measurements but controls interference.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">5</div>
+      <div class="step-content">
+        <p><strong>Build your own state.</strong> Make a 90/10 state:</p>
+        <p><code>c_plus = np.sqrt(0.9)</code></p>
+        <p><code>c_minus = np.sqrt(0.1)</code></p>
+        <p><code>print(f'P(+z) = {abs(c_plus)**2:.0%},  P(-z) = {abs(c_minus)**2:.0%}')</code></p>
+        <p>What about an equal superposition? Try <code>c_plus = 1/np.sqrt(2)</code> and <code>c_minus = 1/np.sqrt(2)</code>. What state is that? (Hint: look at the definition of $|{+x}\rangle$ from Exercise 2.)</p>
+      </div>
+    </div>
+
+    <div class="callout-result">
+      <p style="margin-bottom: 0;"><strong>What you just did:</strong> You constructed a quantum state, extracted probabilities via the Born rule, verified normalization, and discovered that phase doesn't affect individual probabilities but is essential for interference. That's the complete toolkit for Chapter 1.</p>
     </div>
   </section>
 
