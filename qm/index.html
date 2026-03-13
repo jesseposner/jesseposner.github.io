@@ -646,66 +646,84 @@ tailwind.config = {
     <div class="section-label" style="color: #22c55e;">Interactive Exercise</div>
     <h2 style="color: #22c55e;">Try It: Forces &amp; Deflection</h2>
 
-    <p>The Python environment below has the physical constants pre-loaded (it runs automatically when the page loads). The top pane shows what already ran. <strong>Your job is to type commands in the input bar at the bottom</strong> and press Shift+Enter to run each one.</p>
+    <p>The Python environment below has the physical constants and a <code>check()</code> function pre-loaded. <strong>Your job is to type commands in the input bar at the bottom</strong> and press Shift+Enter to run each one. The <code>check()</code> function will tell you PASS or FAIL after each step.</p>
 
     <div class="repl-container">
       <div class="repl-header"><span class="dot"></span> Live Python (runs in your browser)</div>
       <iframe class="repl-frame"
-        src="https://jupyterlite.github.io/demo/repl/index.html?kernel=python&toolbar=1&theme=JupyterLab%20Dark&code=import%20numpy%20as%20np%0Ahbar%20%3D%201.055e-27%20%20%20%23%20reduced%20Planck%20constant%20(erg%C2%B7s)%0Ae%20%3D%204.803e-10%20%20%20%20%20%23%20electron%20charge%20(esu)%0Am_e%20%3D%209.109e-28%20%20%20%23%20electron%20mass%20(grams)%0Ac%20%3D%202.998e10%20%20%20%20%20%23%20speed%20of%20light%20(cm%2Fs)%0Ag%20%3D%202.00%20%20%20%20%20%20%20%20%20%20%23%20electron%20g-factor%0Aprint('Constants%20loaded.%20Ready!%20Follow%20the%20steps%20below.')"
+        src="https://jupyterlite.github.io/demo/repl/index.html?kernel=python&toolbar=1&theme=JupyterLab%20Dark&code=import%20numpy%20as%20np%0Ahbar%20%3D%201.055e-27%0Ae%20%3D%204.803e-10%0Am_e%20%3D%209.109e-28%0Ac%20%3D%202.998e10%0Ag%20%3D%202.00%0Adef%20check%28name%2C%20got%2C%20expected%2C%20tol%3D1e-10%29%3A%0A%20%20%20%20if%20abs%28got%20-%20expected%29%20%3C%20tol%3A%0A%20%20%20%20%20%20%20%20print%28f%27%20%20PASS%20%20%7Bname%7D%20%3D%20%7Bgot%3A.4e%7D%27%29%0A%20%20%20%20else%3A%0A%20%20%20%20%20%20%20%20print%28f%27%20%20FAIL%20%20%7Bname%7D%20%3D%20%7Bgot%3A.4e%7D%20%28expected%20%7Bexpected%3A.4e%7D%29%27%29%0Aprint%28%27Constants%20and%20check%28%29%20loaded.%27%29%0Aprint%28%27Follow%20the%20steps%20below%20the%20box.%27%29"
       ></iframe>
       <div class="repl-instructions">
-        Wait for "Constants loaded. Ready!" in the top pane, then follow the steps below.
+        Wait for "Constants and check() loaded." in the top pane, then follow the steps below. Type each line in the input bar and press Shift+Enter.
       </div>
     </div>
 
-    <p>Now type each line in the input bar and press <strong>Shift+Enter</strong> after each one. Read what comes back before moving on.</p>
+    <h4>Worked Example: Spin-Up</h4>
+
+    <p>First, let's walk through the full calculation for a spin-up atom. This is the chain from Section 1.1: spin &rarr; magnetic moment &rarr; force.</p>
 
     <div class="step">
       <div class="step-num">1</div>
       <div class="step-content">
-        <p><strong>Compute the spin angular momentum for spin-up.</strong> Type this and press Shift+Enter:</p>
+        <p><strong>The spin angular momentum for spin-up: $S_z = +\hbar/2$.</strong></p>
         <p><code>S_z = hbar / 2</code></p>
-        <p>No output, that's normal. You just stored a value. Now check it:</p>
-        <p><code>print(f'S_z = {S_z:.4e} erg-seconds')</code></p>
-        <p>You should see: <code>S_z = 5.2750e-28 erg-seconds</code></p>
+        <p><code>check('S_z', S_z, 5.275e-28)</code></p>
+        <p>You should see: <code>PASS  S_z = 5.2750e-28</code>. This is a very small number (in erg-seconds). Quantum stuff is tiny.</p>
       </div>
     </div>
 
     <div class="step">
       <div class="step-num">2</div>
       <div class="step-content">
-        <p><strong>Compute the magnetic moment.</strong> This is Eq 1.3 from the reading: $\mu_z = \frac{gq}{2m_ec}S_z$</p>
+        <p><strong>The magnetic moment.</strong> This is Eq 1.3: $\mu_z = \frac{gq}{2m_ec}S_z$. The electron's charge is $-e$ (negative):</p>
         <p><code>mu_z = (g * (-e)) / (2 * m_e * c) * S_z</code></p>
-        <p><code>print(f'mu_z = {mu_z:.4e} erg/gauss')</code></p>
-        <p>You should see a <strong>negative</strong> number. <em>Why negative?</em> Because the electron's charge is negative ($-e$), so its magnetic moment points opposite to its spin. Spin up, but magnetic moment down.</p>
+        <p><code>check('mu_z', mu_z, -9.2775e-21)</code></p>
+        <p><strong>Note the sign is negative.</strong> The electron's charge is negative, so its magnetic moment points <em>opposite</em> to its spin. Spin up, but magnetic moment down. This is important for getting the force direction right.</p>
       </div>
     </div>
 
     <div class="step">
       <div class="step-num">3</div>
       <div class="step-content">
-        <p><strong>Compute the force in the SG apparatus.</strong> This is Eq 1.4: $F_z = \mu_z \frac{\partial B_z}{\partial z}$</p>
+        <p><strong>The force.</strong> This is Eq 1.4: $F_z = \mu_z \frac{\partial B_z}{\partial z}$. The field gradient is negative (sharp tip on N pole, field weakens going up):</p>
         <p><code>dBdz = -1000</code></p>
         <p><code>F_z = mu_z * dBdz</code></p>
-        <p><code>print(f'F_z = {F_z:.4e} dynes')</code></p>
-        <p>You should see a <strong>positive</strong> number. Negative times negative = positive. <em>Spin-up atoms get pushed up.</em> The signs work out.</p>
+        <p><code>check('F_z', F_z, 9.2775e-18)</code></p>
+        <p><strong>Positive force = pushed upward.</strong> Negative $\mu_z$ times negative gradient = positive force. Spin-up atoms go up. The signs work out.</p>
       </div>
     </div>
+
+    <h4>Exercise: Spin-Down (Your Turn)</h4>
+
+    <p>Now do the same calculation for a spin-down atom ($S_z = -\hbar/2$). Less hand-holding this time.</p>
 
     <div class="step">
       <div class="step-num">4</div>
       <div class="step-content">
-        <p><strong>Now try spin-down.</strong> Change the spin to $S_z = -\hbar/2$ and redo the calculation:</p>
-        <p><code>S_z = -hbar / 2</code></p>
-        <p><code>mu_z = (g * (-e)) / (2 * m_e * c) * S_z</code></p>
-        <p><code>F_z = mu_z * dBdz</code></p>
-        <p><code>print(f'F_z = {F_z:.4e} dynes')</code></p>
-        <p>What sign is the force now? Does it make sense that spin-down atoms deflect downward?</p>
+        <p><strong>Compute $S_z$, $\mu_z$, and $F_z$ for spin-down.</strong></p>
+        <p>Hint: Start with <code>S_z = -hbar / 2</code>, then recompute <code>mu_z</code> and <code>F_z</code> using the same formulas.</p>
+        <p><code>check('F_z (spin-down)', F_z, -9.2775e-18)</code></p>
+        <p>The force should be <em>negative</em> (pushed downward). If you see PASS, you got it.</p>
+      </div>
+    </div>
+
+    <h4>Challenge: What If Spin Were Classical?</h4>
+
+    <div class="step">
+      <div class="step-num">5</div>
+      <div class="step-content">
+        <p>The $g$-factor for the electron is 2. If spin were literally a ball of charge rotating, $g$ would be 1 (same as orbital angular momentum). What happens to the force if $g = 1$?</p>
+        <p><code>g_classical = 1.0</code></p>
+        <p><code>mu_z_classical = (g_classical * (-e)) / (2 * m_e * c) * (hbar/2)</code></p>
+        <p><code>F_z_classical = mu_z_classical * dBdz</code></p>
+        <p><code>print(f'Quantum (g=2): F = {9.2775e-18:.4e}')</code></p>
+        <p><code>print(f'Classical (g=1): F = {F_z_classical:.4e}')</code></p>
+        <p>Half the deflection. The experiment measures g=2, not g=1. Nature is telling us: this isn't a spinning ball.</p>
       </div>
     </div>
 
     <div class="callout-result">
-      <p style="margin-bottom: 0;"><strong>What you just did:</strong> You computed the full chain from Section 1.1: spin &rarr; magnetic moment &rarr; force, for both spin-up and spin-down. The magnet pushes them in opposite directions. Two spots on the detector, not a smear.</p>
+      <p style="margin-bottom: 0;"><strong>What you just did:</strong> Computed the full chain (spin &rarr; magnetic moment &rarr; force) for both spin states, verified each step, and showed that the classical spinning-ball model gives the wrong g-factor. Two spots on the detector, not a smear, and the spacing rules out classical rotation.</p>
     </div>
   </section>
 
@@ -895,73 +913,110 @@ tailwind.config = {
     <div class="section-label" style="color: #22c55e;">Interactive Exercise</div>
     <h2 style="color: #22c55e;">Try It: Simulate the Experiments</h2>
 
-    <p>This REPL pre-loads quantum states and a <code>measure()</code> function. You'll use them to replay each experiment and see the numbers confirm what the reading describes.</p>
+    <p>This REPL pre-loads the six quantum states and two functions: <code>sg(state, axis)</code> runs a simulated Stern-Gerlach device and prints probabilities, and <code>check_exp(name, p_up, expected)</code> validates your result. Type commands in the input bar and press Shift+Enter.</p>
 
     <div class="repl-container">
       <div class="repl-header"><span class="dot"></span> Live Python (runs in your browser)</div>
-      <iframe class="repl-frame" style="height: 360px;"
-        src="https://jupyterlite.github.io/demo/repl/index.html?kernel=python&toolbar=1&theme=JupyterLab%20Dark&code=import%20numpy%20as%20np%0Aup_z%20%3D%20np.array(%5B1%2C%200%5D%2C%20dtype%3Dcomplex)%0Adn_z%20%3D%20np.array(%5B0%2C%201%5D%2C%20dtype%3Dcomplex)%0Aup_x%20%3D%20np.array(%5B1%2C%201%5D%2C%20dtype%3Dcomplex)%20%2F%20np.sqrt(2)%0Adn_x%20%3D%20np.array(%5B1%2C-1%5D%2C%20dtype%3Dcomplex)%20%2F%20np.sqrt(2)%0Aup_y%20%3D%20np.array(%5B1%2C1j%5D%2C%20dtype%3Dcomplex)%20%2F%20np.sqrt(2)%0Adn_y%20%3D%20np.array(%5B1%2C-1j%5D%2C%20dtype%3Dcomplex)%20%2F%20np.sqrt(2)%0A%0Adef%20measure(state%2C%20axis%3D'z')%3A%0A%20%20%20%20bases%20%3D%20%7B'z'%3A(up_z%2Cdn_z)%2C'x'%3A(up_x%2Cdn_x)%2C'y'%3A(up_y%2Cdn_y)%7D%0A%20%20%20%20b%20%3D%20bases%5Baxis%5D%0A%20%20%20%20p_up%20%3D%20abs(np.vdot(b%5B0%5D%2Cstate))**2%0A%20%20%20%20p_dn%20%3D%20abs(np.vdot(b%5B1%5D%2Cstate))**2%0A%20%20%20%20print(f'%20%20P(%2B%7Baxis%7D)%20%3D%20%7Bp_up%3A6.1%25%7D%20%20%20P(-%7Baxis%7D)%20%3D%20%7Bp_dn%3A6.1%25%7D')%0A%20%20%20%20return%20b%0A%0Aprint('Simulator%20ready!%20States%20loaded%3A%20up_z%2C%20dn_z%2C%20up_x%2C%20dn_x%2C%20up_y%2C%20dn_y')%0Aprint('Function%20loaded%3A%20measure(state%2C%20axis)')%0Aprint('Follow%20the%20steps%20below.')"
+      <iframe class="repl-frame" style="height: 380px;"
+        src="https://jupyterlite.github.io/demo/repl/index.html?kernel=python&toolbar=1&theme=JupyterLab%20Dark&code=import%20numpy%20as%20np%0Aup_z%20%3D%20np.array%28%5B1%2C%200%5D%2C%20dtype%3Dcomplex%29%0Adn_z%20%3D%20np.array%28%5B0%2C%201%5D%2C%20dtype%3Dcomplex%29%0Aup_x%20%3D%20np.array%28%5B1%2C%201%5D%2C%20dtype%3Dcomplex%29%20/%20np.sqrt%282%29%0Adn_x%20%3D%20np.array%28%5B1%2C-1%5D%2C%20dtype%3Dcomplex%29%20/%20np.sqrt%282%29%0Aup_y%20%3D%20np.array%28%5B1%2C1j%5D%2C%20dtype%3Dcomplex%29%20/%20np.sqrt%282%29%0Adn_y%20%3D%20np.array%28%5B1%2C-1j%5D%2C%20dtype%3Dcomplex%29%20/%20np.sqrt%282%29%0Adef%20sg%28state%2C%20axis%3D%27z%27%29%3A%0A%20%20%20%20b%20%3D%20%7B%27z%27%3A%28up_z%2Cdn_z%29%2C%27x%27%3A%28up_x%2Cdn_x%29%2C%27y%27%3A%28up_y%2Cdn_y%29%7D%5Baxis%5D%0A%20%20%20%20p_up%20%3D%20abs%28np.vdot%28b%5B0%5D%2Cstate%29%29%2A%2A2%0A%20%20%20%20p_dn%20%3D%20abs%28np.vdot%28b%5B1%5D%2Cstate%29%29%2A%2A2%0A%20%20%20%20print%28f%27%20%20P%28%2B%7Baxis%7D%29%20%3D%20%7Bp_up%3A6.1%25%7D%20%20%20P%28-%7Baxis%7D%29%20%3D%20%7Bp_dn%3A6.1%25%7D%27%29%0A%20%20%20%20return%20p_up%2C%20p_dn%0Adef%20check_exp%28name%2C%20p_up%2C%20expected_up%29%3A%0A%20%20%20%20if%20abs%28p_up%20-%20expected_up%29%20%3C%200.01%3A%0A%20%20%20%20%20%20%20%20print%28f%27%20%20PASS%20%20%7Bname%7D%27%29%0A%20%20%20%20else%3A%0A%20%20%20%20%20%20%20%20print%28f%27%20%20FAIL%20%20%7Bname%7D%3A%20got%20%7Bp_up%3A.1%25%7D%2C%20expected%20%7Bexpected_up%3A.1%25%7D%27%29%0Aprint%28%27Simulator%20ready%21%27%29%0Aprint%28%27States%3A%20up_z%2C%20dn_z%2C%20up_x%2C%20dn_x%2C%20up_y%2C%20dn_y%27%29%0Aprint%28%27Functions%3A%20sg%28state%2C%20axis%29%20%20check_exp%28name%2C%20p_up%2C%20expected%29%27%29%0Aprint%28%27Follow%20the%20steps%20below%20the%20box.%27%29"
       ></iframe>
       <div class="repl-instructions">
         Wait for "Simulator ready!" then follow the steps below. Type each line in the input bar and press Shift+Enter.
       </div>
     </div>
 
-    <p>The simulator is ready. Now replay each experiment by typing commands in the input bar.</p>
+    <h4>Worked Example: Experiment 1 (Same Question Twice)</h4>
+
+    <p>Start with a spin-up-in-z atom. Ask: "What is your z-spin?" The <code>sg()</code> function is your Stern-Gerlach device. It takes a state and an axis, and returns the probabilities.</p>
 
     <div class="step">
       <div class="step-num">1</div>
       <div class="step-content">
-        <p><strong>Experiment 1: Same question twice.</strong> Start with a spin-up-in-z atom. Measure z.</p>
-        <p><code>measure(up_z, 'z')</code></p>
+        <p><strong>Run the atom through SGz:</strong></p>
+        <p><code>p_up, p_dn = sg(up_z, 'z')</code></p>
         <p>You should see: <code>P(+z) = 100.0%   P(-z) =   0.0%</code></p>
-        <p>100% spin-up, 0% spin-down. Ask the same question, get the same answer. No surprise.</p>
+        <p>Now validate:</p>
+        <p><code>check_exp('Exp 1: same question twice', p_up, 1.0)</code></p>
+        <p>PASS. No surprise: if you already know it's spin-up, measuring z confirms it. <em>This establishes that measurement is preparation.</em></p>
       </div>
     </div>
+
+    <h4>Exercise: Experiment 2 (A Different Question)</h4>
+
+    <p>Same spin-up-in-z atom. But now the SG device is rotated: measure x instead of z.</p>
 
     <div class="step">
       <div class="step-num">2</div>
       <div class="step-content">
-        <p><strong>Experiment 2: A different question.</strong> Same spin-up-in-z atom. Now measure x instead.</p>
-        <p><code>measure(up_z, 'x')</code></p>
-        <p>You should see: <code>P(+x) =  50.0%   P(-x) =  50.0%</code></p>
-        <p>Complete coin flip. Knowing z tells you nothing about x.</p>
+        <p><strong>Before you run it, predict:</strong> what fraction comes out +x? You know the atom is +z. Does that tell you anything about x?</p>
+        <p>Now check your prediction:</p>
+        <p><code>p_up, p_dn = sg(up_z, 'x')</code></p>
+        <p><code>check_exp('Exp 2: different question', p_up, 0.5)</code></p>
+        <p>50/50. A coin flip. Knowing z tells you <em>nothing</em> about x. These are independent questions. So far, not too strange.</p>
       </div>
     </div>
+
+    <h4>Exercise: Experiment 3 (The Devastating One)</h4>
+
+    <p>You selected +z, then passed through SGx and selected +x (blocking the -x beam). The atom is now in state <code>up_x</code>. Measure z again.</p>
 
     <div class="step">
       <div class="step-num">3</div>
       <div class="step-content">
-        <p><strong>Experiment 3: The devastating one.</strong> You selected +z, then selected +x (blocking -x). Now measure z on that +x state.</p>
-        <p><code>measure(up_x, 'z')</code></p>
-        <p>You should see: <code>P(+z) =  50.0%   P(-z) =  50.0%</code></p>
-        <p>50/50. The x-measurement <em>erased</em> the z-information. They were definitely spin-up in z before. Now it's a coin flip. Think about why.</p>
+        <p><strong>Before you run it, predict:</strong> the atom <em>was</em> definitely +z. Then it was additionally filtered as +x. If you check z again, shouldn't it still be +z?</p>
+        <p>Now check:</p>
+        <p><code>p_up, p_dn = sg(up_x, 'z')</code></p>
+        <p><code>check_exp('Exp 3: the devastating one', p_up, 0.5)</code></p>
+        <p><strong>50/50.</strong> The z-information is gone. The x-measurement didn't just add knowledge; it <em>destroyed</em> the z-knowledge. This is impossible for a classical object. A spinning top has definite L<sub>z</sub> and L<sub>x</sub> simultaneously. The electron doesn't.</p>
       </div>
     </div>
+
+    <h4>Exercise: Experiment 4 (The Miracle)</h4>
+
+    <p>Same setup, but this time both x-paths stay open. No blocking. The beams recombine.</p>
 
     <div class="step">
       <div class="step-num">4</div>
       <div class="step-content">
-        <p><strong>Experiment 4: The miracle.</strong> This time we don't block either x-path. The +x and -x beams recombine. To simulate recombination, we add the amplitudes:</p>
+        <p><strong>Construct the recombined state.</strong> The +x and -x paths each carry half the beam. To recombine, add the amplitudes (not probabilities!):</p>
         <p><code>recombined = (1/np.sqrt(2))*up_x + (1/np.sqrt(2))*dn_x</code></p>
-        <p><code>measure(recombined, 'z')</code></p>
-        <p>You should see: <code>P(+z) = 100.0%   P(-z) =   0.0%</code></p>
-        <p><strong>100% spin-up again.</strong> Same magnets as Experiment 3, but we didn't block a path, and the z-information is perfectly preserved. The only difference: whether we looked.</p>
+        <p><code>p_up, p_dn = sg(recombined, 'z')</code></p>
+        <p><code>check_exp('Exp 4: the miracle', p_up, 1.0)</code></p>
+        <p><strong>100% spin-up.</strong> The z-information is perfectly preserved. Same magnets as Experiment 3. The only difference: you didn't block a path, which means you didn't learn S<sub>x</sub>.</p>
       </div>
     </div>
+
+    <h4>Negative Example: Why Classical Probability Fails</h4>
+
+    <p>You might think: "In Experiment 4, the atoms are really 50% +x and 50% -x, we just don't know which." Let's test that classical assumption.</p>
 
     <div class="step">
       <div class="step-num">5</div>
       <div class="step-content">
-        <p><strong>Explore on your own.</strong> Try any of these:</p>
-        <p><code>measure(up_z, 'y')</code> &mdash; what does a z-eigenstate look like measured in y?</p>
-        <p><code>measure(up_y, 'z')</code> &mdash; what about the reverse?</p>
-        <p><code>measure(up_y, 'x')</code> &mdash; are x and y also incompatible?</p>
+        <p><strong>The classical prediction.</strong> If 50% are +x and 50% are -x, and each group gives 50/50 in z (from Exp 3), then the combined result should be:</p>
+        <p><code>p_classical = 0.5 * 0.5 + 0.5 * 0.5</code></p>
+        <p><code>print(f'Classical prediction: P(+z) = {p_classical:.0%}')</code></p>
+        <p><code>print(f'Quantum result:      P(+z) = 100%')</code></p>
+        <p><code>print(f'Classical is WRONG by {abs(1.0 - p_classical):.0%}')</code></p>
+        <p>Classical probability gives 50%. We get 100%. Probabilities can only add up (0.25 + 0.25 = 0.50, never more). To get cancellation, you need <em>amplitudes</em>, which can be negative or complex and can interfere destructively. <strong>This is the birth of quantum mechanics.</strong></p>
+      </div>
+    </div>
+
+    <h4>Challenge: Explore (No Hints)</h4>
+
+    <div class="step">
+      <div class="step-num">6</div>
+      <div class="step-content">
+        <p>Try these on your own. No check functions, just see what happens:</p>
+        <p><code>sg(up_z, 'y')</code> &mdash; what does a z-eigenstate look like measured in y?</p>
+        <p><code>sg(up_y, 'x')</code> &mdash; are x and y also incompatible?</p>
+        <p><code>sg(dn_x, 'z')</code> &mdash; Experiment 3, but you selected -x instead of +x. Same result?</p>
+        <p>Pattern: every pair of different axes gives 50/50. All three directions are mutually incompatible.</p>
       </div>
     </div>
 
     <div class="callout-result">
-      <p style="margin-bottom: 0;"><strong>What you just saw:</strong> Experiments 3 and 4 use the same magnets, same beam, same atoms. The only difference is whether you extract information about S<sub>x</sub> (by blocking a path). Blocking = 50/50. Not blocking = 100%. Classical probabilities can't produce this. Amplitudes can.</p>
+      <p style="margin-bottom: 0;"><strong>What you just proved:</strong> (1) Measurement is preparation, not discovery. (2) Incompatible observables erase each other. (3) Not looking preserves information that looking destroys. (4) Classical probability gives the wrong answer: the framework needs amplitudes, not probabilities.</p>
     </div>
   </section>
 
@@ -1059,75 +1114,108 @@ tailwind.config = {
     <div class="section-label" style="color: #22c55e;">Interactive Exercise</div>
     <h2 style="color: #22c55e;">Try It: States &amp; Probabilities</h2>
 
-    <p>Now you'll build quantum states by hand, compute probabilities using the Born rule, and see what phase does (and doesn't) do.</p>
+    <p>This REPL pre-loads numpy and two validation functions: <code>check_prob(name, got, expected)</code> and <code>check_norm(c_plus, c_minus)</code>. You'll build quantum states by hand, apply the Born rule, and discover what phase does.</p>
 
     <div class="repl-container">
       <div class="repl-header"><span class="dot"></span> Live Python (runs in your browser)</div>
-      <iframe class="repl-frame" style="height: 300px;"
-        src="https://jupyterlite.github.io/demo/repl/index.html?kernel=python&toolbar=1&theme=JupyterLab%20Dark&code=import%20numpy%20as%20np%0Aprint('numpy%20loaded.%20Follow%20the%20steps%20below.')"
+      <iframe class="repl-frame" style="height: 320px;"
+        src="https://jupyterlite.github.io/demo/repl/index.html?kernel=python&toolbar=1&theme=JupyterLab%20Dark&code=import%20numpy%20as%20np%0Adef%20check_prob%28name%2C%20got%2C%20expected%29%3A%0A%20%20%20%20if%20abs%28got%20-%20expected%29%20%3C%200.001%3A%0A%20%20%20%20%20%20%20%20print%28f%27%20%20PASS%20%20%7Bname%7D%20%3D%20%7Bgot%3A.4f%7D%27%29%0A%20%20%20%20else%3A%0A%20%20%20%20%20%20%20%20print%28f%27%20%20FAIL%20%20%7Bname%7D%20%3D%20%7Bgot%3A.4f%7D%20%28expected%20%7Bexpected%3A.4f%7D%29%27%29%0Adef%20check_norm%28c_plus%2C%20c_minus%29%3A%0A%20%20%20%20s%20%3D%20abs%28c_plus%29%2A%2A2%20%2B%20abs%28c_minus%29%2A%2A2%0A%20%20%20%20if%20abs%28s%20-%201.0%29%20%3C%200.001%3A%0A%20%20%20%20%20%20%20%20print%28f%27%20%20PASS%20%20Normalized%3A%20%7Cc%2B%7C%5E2%20%2B%20%7Cc-%7C%5E2%20%3D%20%7Bs%3A.4f%7D%27%29%0A%20%20%20%20else%3A%0A%20%20%20%20%20%20%20%20print%28f%27%20%20FAIL%20%20NOT%20normalized%3A%20%7Cc%2B%7C%5E2%20%2B%20%7Cc-%7C%5E2%20%3D%20%7Bs%3A.4f%7D%20%28should%20be%201.0%29%27%29%0Aprint%28%27Ready%21%20Functions%3A%20check_prob%28name%2C%20got%2C%20expected%29%27%29%0Aprint%28%27%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20check_norm%28c_plus%2C%20c_minus%29%27%29%0Aprint%28%27Follow%20the%20steps%20below%20the%20box.%27%29"
       ></iframe>
       <div class="repl-instructions">
-        Wait for "numpy loaded." then follow the steps below.
+        Wait for "Ready!" then follow the steps below.
       </div>
     </div>
 
-    <p>Work through Example 1.1 from the textbook, step by step.</p>
+    <h4>Worked Example: Verify Example 1.1</h4>
+
+    <p>The textbook gives the state $|\psi\rangle = \frac{1}{2}|{+z}\rangle + \frac{i\sqrt{3}}{2}|{-z}\rangle$ and claims the probabilities are 25% and 75%. Let's verify computationally.</p>
 
     <div class="step">
       <div class="step-num">1</div>
       <div class="step-content">
-        <p><strong>Define the state from Example 1.1:</strong> $|\psi\rangle = \frac{1}{2}|{+z}\rangle + \frac{i\sqrt{3}}{2}|{-z}\rangle$</p>
+        <p><strong>Define the amplitudes.</strong> Note: <code>1j</code> is Python's way of writing the imaginary number $i$.</p>
         <p><code>c_plus = 1/2</code></p>
         <p><code>c_minus = 1j * np.sqrt(3) / 2</code></p>
-        <p>Note: <code>1j</code> is Python's way of writing the imaginary number $i$.</p>
       </div>
     </div>
 
     <div class="step">
       <div class="step-num">2</div>
       <div class="step-content">
-        <p><strong>Apply the Born rule.</strong> Probability = square the magnitude of the amplitude.</p>
+        <p><strong>Apply the Born rule.</strong> Probability = $|c|^2$ = magnitude squared. Use <code>abs()</code> for magnitude:</p>
         <p><code>P_up = abs(c_plus)**2</code></p>
         <p><code>P_dn = abs(c_minus)**2</code></p>
-        <p><code>print(f'P(+z) = {P_up:.0%}')</code></p>
-        <p><code>print(f'P(-z) = {P_dn:.0%}')</code></p>
-        <p>You should see: 25% and 75%. A measurement of this state is three times more likely to give spin-down than spin-up.</p>
+        <p><code>check_prob('P(+z)', P_up, 0.25)</code></p>
+        <p><code>check_prob('P(-z)', P_dn, 0.75)</code></p>
+        <p>Both PASS. 25% chance of spin-up, 75% chance of spin-down.</p>
       </div>
     </div>
 
     <div class="step">
       <div class="step-num">3</div>
       <div class="step-content">
-        <p><strong>Check normalization.</strong> Probabilities must sum to 1.</p>
-        <p><code>print(f'Sum = {P_up + P_dn}')</code></p>
-        <p>If this isn't 1.0, something went wrong.</p>
+        <p><strong>Verify normalization.</strong> A valid quantum state must have probabilities summing to 1:</p>
+        <p><code>check_norm(c_plus, c_minus)</code></p>
+        <p>PASS. This state is properly normalized. If it weren't, it wouldn't be a valid quantum state.</p>
       </div>
     </div>
+
+    <h4>Negative Example: What Happens Without Normalization?</h4>
 
     <div class="step">
       <div class="step-num">4</div>
       <div class="step-content">
-        <p><strong>What does phase do?</strong> Change the amplitude to be real instead of imaginary:</p>
-        <p><code>c_minus_real = np.sqrt(3) / 2</code></p>
-        <p><code>print(f'P(-z) with i:       {abs(1j * np.sqrt(3)/2)**2:.0%}')</code></p>
-        <p><code>print(f'P(-z) without i:    {abs(np.sqrt(3)/2)**2:.0%}')</code></p>
-        <p>Same probability! The $i$ doesn't affect the Born rule for a single measurement. So why is it there? Because it matters when amplitudes <em>combine</em>, which is exactly what happened in Experiment 4 (interference). Phase is invisible to individual measurements but controls interference.</p>
+        <p><strong>Try an invalid state.</strong> What if both amplitudes are 1?</p>
+        <p><code>check_norm(1, 1)</code></p>
+        <p>FAIL. $|1|^2 + |1|^2 = 2$, not 1. This means the "probabilities" would add up to 200%. Nonsense. The Born rule requires unit vectors. This is why normalization matters: it's the constraint that makes the math produce valid probabilities.</p>
       </div>
     </div>
+
+    <h4>Exercise: What Does Phase Do?</h4>
 
     <div class="step">
       <div class="step-num">5</div>
       <div class="step-content">
-        <p><strong>Build your own state.</strong> Make a 90/10 state:</p>
+        <p><strong>Compare two states with the same magnitudes but different phases:</strong></p>
+        <p><code>c_minus_with_i = 1j * np.sqrt(3) / 2</code></p>
+        <p><code>c_minus_without_i = np.sqrt(3) / 2</code></p>
+        <p><code>check_prob('P(-z) with i', abs(c_minus_with_i)**2, 0.75)</code></p>
+        <p><code>check_prob('P(-z) without i', abs(c_minus_without_i)**2, 0.75)</code></p>
+        <p>Both 75%. <strong>Phase doesn't affect individual probabilities.</strong> The $i$ washes out when you take the magnitude squared: $|i \cdot x|^2 = |x|^2$.</p>
+        <p>So why does phase matter? Because in Experiment 4, amplitudes from two paths <em>combine before squaring</em>. If they have opposite signs, they cancel (destructive interference). If they have the same sign, they reinforce. Phase is invisible to single measurements but controls interference.</p>
+      </div>
+    </div>
+
+    <h4>Exercise: Build Your Own States</h4>
+
+    <div class="step">
+      <div class="step-num">6</div>
+      <div class="step-content">
+        <p><strong>A 90/10 state.</strong> You want P(+z) = 90% and P(-z) = 10%. What should the amplitudes be? (Hint: $|c|^2 = 0.9$ means $c = \sqrt{0.9}$.)</p>
         <p><code>c_plus = np.sqrt(0.9)</code></p>
         <p><code>c_minus = np.sqrt(0.1)</code></p>
-        <p><code>print(f'P(+z) = {abs(c_plus)**2:.0%},  P(-z) = {abs(c_minus)**2:.0%}')</code></p>
-        <p>What about an equal superposition? Try <code>c_plus = 1/np.sqrt(2)</code> and <code>c_minus = 1/np.sqrt(2)</code>. What state is that? (Hint: look at the definition of $|{+x}\rangle$ from Exercise 2.)</p>
+        <p><code>check_prob('P(+z)', abs(c_plus)**2, 0.9)</code></p>
+        <p><code>check_norm(c_plus, c_minus)</code></p>
+        <p>Both PASS.</p>
+      </div>
+    </div>
+
+    <h4>Challenge: Connect Back to Experiment 2</h4>
+
+    <div class="step">
+      <div class="step-num">7</div>
+      <div class="step-content">
+        <p><strong>What state gives exactly 50/50 in z?</strong> Build it:</p>
+        <p><code>c_plus = 1/np.sqrt(2)</code></p>
+        <p><code>c_minus = 1/np.sqrt(2)</code></p>
+        <p><code>check_prob('P(+z)', abs(c_plus)**2, 0.5)</code></p>
+        <p><code>check_norm(c_plus, c_minus)</code></p>
+        <p>This is the state $|{+x}\rangle$: an atom known to be spin-up in x has a 50/50 chance when measured in z. You derived this from the formalism. In Exercise 2, you saw it experimentally. They match.</p>
       </div>
     </div>
 
     <div class="callout-result">
-      <p style="margin-bottom: 0;"><strong>What you just did:</strong> You constructed a quantum state, extracted probabilities via the Born rule, verified normalization, and discovered that phase doesn't affect individual probabilities but is essential for interference. That's the complete toolkit for Chapter 1.</p>
+      <p style="margin-bottom: 0;"><strong>What you just proved:</strong> (1) The Born rule correctly extracts probabilities from amplitudes. (2) Valid states must be normalized. (3) Phase is invisible to single measurements but controls interference. (4) The formalism (Section 1.3) reproduces the experimental results (Section 1.2). The math isn't separate from the physics; it's a precise encoding of it.</p>
     </div>
   </section>
 
