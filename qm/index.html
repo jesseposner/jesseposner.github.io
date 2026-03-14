@@ -327,6 +327,15 @@ tailwind.config = {
     <a href="#what-they-expected" class="nav-link sub">What They Expected</a>
     <a href="#what-they-got" class="nav-link sub">What They Got</a>
 
+    <a href="#math-from-scratch" class="nav-link" style="margin-top: 0.75rem;">Before the Math</a>
+    <a href="#math-reading-equations" class="nav-link sub">Reading Equations</a>
+    <a href="#math-symbols" class="nav-link sub">The Symbol Table</a>
+    <a href="#math-vectors" class="nav-link sub">Vectors</a>
+    <a href="#math-dot-product" class="nav-link sub">Dot Product</a>
+    <a href="#math-basis" class="nav-link sub">Basis &amp; Components</a>
+    <a href="#math-complex" class="nav-link sub">Complex Numbers</a>
+    <a href="#math-eigenstate" class="nav-link sub">Eigenstates</a>
+
     <a href="#sec-1-1" class="nav-link" style="margin-top: 0.75rem;">1.1 The Formal Version</a>
     <a href="#physics-chain" class="nav-link sub">The Physics Chain</a>
     <a href="#bookkeeping" class="nav-link sub">Bookkeeping Detail</a>
@@ -574,6 +583,155 @@ tailwind.config = {
     <p>Silver has 47 electrons. 46 of them pair up: for every electron with spin pointing one way, there's a partner pointing the other way, and they cancel out. The 47th electron is unpaired and alone. It also happens to have zero <em>orbital</em> angular momentum (it's in what chemists call an "s-orbital," which has spherical symmetry, so no preferred axis of circulation). So the atom's entire magnetic personality comes from that one electron's intrinsic spin. Silver isolates the quantum phenomenon perfectly.</p>
 
     <p>This is 1922. Bohr has proposed quantized electron orbits (1913). Schr&ouml;dinger's equation doesn't exist yet (1926). The math to explain what's happening hasn't been invented. Stern and Gerlach just see two dots where there should be a smear, and they send Bohr a postcard: <em>"the experimental proof of directional quantization."</em></p>
+  </section>
+
+  <!-- BEFORE THE MATH -->
+  <section id="math-from-scratch">
+    <div class="section-label">Before the Formalism</div>
+    <h2>Before the Math</h2>
+
+    <p>The next sections translate the physical picture into equations. Before that, let's make sure every mathematical concept and symbol has a concrete meaning. No assumptions about what you've seen before.</p>
+
+    <h3 id="math-reading-equations">Reading Equations</h3>
+
+    <p>An equation is a sentence. It says "this thing equals that thing." The equals sign is a verb, not decoration.</p>
+
+    <p>When Townsend writes $\mu = \frac{q}{2mc}L$, he's making a claim: "the magnetic moment equals this particular combination of charge, mass, speed of light, and angular momentum." Every symbol is a <em>quantity</em>, a number with units attached (like "5 meters" or "1.6 coulombs"). The equation tells you how they're related.</p>
+
+    <p>When you see a chain like $A = B = C$, it means A, B, and C are all the same thing, just expressed differently. The author is showing their work: "I started with this expression, rewrote it this way, then simplified to this."</p>
+
+    <div class="callout-physical">
+      <p style="margin-bottom: 0;"><strong>Reading tip:</strong> When you hit an equation, don't try to "solve" it. Ask: "What does the left side <em>mean</em> physically? What does the right side <em>mean</em>? And why should they be equal?" If you can answer that in English, you understand the equation. The symbols are just shorthand for the English.</p>
+    </div>
+
+    <h3 id="math-symbols">The Symbol Table</h3>
+
+    <p>Here's every symbol that appears in Sections 1.1-1.3, in plain English. Refer back to this when you hit an unfamiliar one.</p>
+
+    <h4>Physical quantities (things you measure)</h4>
+    <ul>
+      <li>$q$ &mdash; <strong>charge</strong> of the particle (for the electron, $q = -e$, negative)</li>
+      <li>$e$ &mdash; the <strong>elementary charge</strong>, a positive constant ($1.6 \times 10^{-19}$ coulombs). The electron's charge is $-e$.</li>
+      <li>$m$ or $m_e$ &mdash; <strong>mass</strong> of the electron</li>
+      <li>$c$ &mdash; <strong>speed of light</strong> (appears in Gaussian units as a conversion factor)</li>
+      <li>$\mathbf{L}$ &mdash; <strong>orbital angular momentum</strong>. How much something is rotating around an axis. Bold = vector (has direction).</li>
+      <li>$\mathbf{S}$ &mdash; <strong>spin angular momentum</strong>. The electron's intrinsic angular-momentum-like property. Also a vector.</li>
+      <li>$S_z$ &mdash; the <strong>z-component</strong> of spin. How much of the spin points in the z-direction. This is what the SG experiment measures.</li>
+      <li>$\hbar$ ("h-bar") &mdash; the <strong>reduced Planck constant</strong>. A tiny number ($1.055 \times 10^{-34}$ J&middot;s) that sets the scale of quantum effects. Spin values are multiples of $\hbar$.</li>
+      <li>$\boldsymbol{\mu}$ or $\mu_z$ &mdash; <strong>magnetic moment</strong> (vector or z-component). How strong a magnet the particle is.</li>
+      <li>$g$ &mdash; the <strong>g-factor</strong>. A dimensionless number ($\approx 2$ for the electron) that scales the relationship between spin and magnetism. If spin were classical rotation, $g$ would be 1.</li>
+      <li>$\mathbf{B}$ &mdash; the <strong>magnetic field</strong>. The field produced by the SG magnets.</li>
+      <li>$\frac{\partial B_z}{\partial z}$ &mdash; the <strong>field gradient</strong>. How fast the magnetic field changes as you move in the z-direction. The $\partial$ symbol means "partial derivative," which just means "rate of change." $\frac{\partial B_z}{\partial z}$ reads as "the rate at which $B_z$ changes per unit change in $z$." If the field is strong at the bottom and weak at the top, this number is negative.</li>
+      <li>$F_z$ &mdash; <strong>force</strong> in the z-direction. What pushes the atom up or down.</li>
+    </ul>
+
+    <h4>Quantities from Eq 1.1's derivation</h4>
+    <p>Eq 1.1 derives the magnetic moment of an orbiting charge. These symbols appear only in that derivation:</p>
+    <ul>
+      <li>$I$ &mdash; <strong>electric current</strong>. Charge flowing per unit time. A charge $q$ completing one orbit in time $T$ is a current of $q/T$.</li>
+      <li>$A$ &mdash; <strong>area</strong> of the orbit (a circle: $\pi r^2$).</li>
+      <li>$T$ &mdash; <strong>period</strong>. The time for one complete orbit.</li>
+      <li>$r$ &mdash; <strong>radius</strong> of the orbit.</li>
+      <li>$v$ &mdash; <strong>velocity</strong> of the orbiting charge. Related to radius and period: $v = 2\pi r / T$.</li>
+    </ul>
+
+    <div class="callout-intuition">
+      <p style="margin-bottom: 0;"><strong>Don't memorize this table.</strong> It's here for reference. The point is: every symbol in an equation corresponds to a real physical thing you can point at. $r$ is the radius of a circular orbit. $T$ is how long one trip around takes. Nothing is abstract until Section 1.3, and even there, the abstractions map back to experiments.</p>
+    </div>
+
+    <h4>Notation from Section 1.3 (quantum formalism)</h4>
+    <ul>
+      <li>$|\psi\rangle$ ("ket psi") &mdash; a <strong>quantum state</strong>. The complete description of a particle. Read the $|\ \rangle$ as a container: the thing inside is the label.</li>
+      <li>$|{+z}\rangle$ &mdash; the state "definitely spin-up in z." A particle that will always come out the top of an SGz device.</li>
+      <li>$\langle\psi|$ ("bra psi") &mdash; the <strong>mirror image</strong> of a ket. Needed for computing inner products.</li>
+      <li>$\langle\varphi|\psi\rangle$ ("bracket") &mdash; the <strong>inner product</strong> (explained below). A number that tells you "how much of $|\psi\rangle$ is in the direction of $|\varphi\rangle$."</li>
+      <li>$c_+$, $c_-$ &mdash; <strong>probability amplitudes</strong>. Complex numbers whose squared magnitudes give probabilities.</li>
+    </ul>
+
+    <h3 id="math-vectors">Vectors</h3>
+
+    <p>A <strong>vector</strong> is a quantity that has both a size (magnitude) and a direction. Contrast with a <strong>scalar</strong>, which is just a number.</p>
+
+    <p>Temperature is a scalar: "72 degrees" is complete information. But "wind at 15 mph" is incomplete: 15 mph <em>in which direction?</em> "Wind at 15 mph from the northwest" is a vector: it has magnitude (15 mph) and direction (from northwest).</p>
+
+    <p>Force is a vector: it pushes with some strength in some direction. Velocity is a vector: speed plus direction. Angular momentum is a vector: it tells you both how fast something is spinning and which axis it's spinning around (by convention, the vector points along the axis, using a right-hand rule).</p>
+
+    <p>In equations, vectors are written in <strong>bold</strong> ($\mathbf{L}$, $\mathbf{S}$, $\mathbf{B}$) or with an arrow ($\vec{L}$). When you see a non-bold version ($L$, $S_z$), that's a <em>component</em>: just the part of the vector pointing in one specific direction. $S_z$ is the z-component of the spin vector: how much of the spin points along the z-axis.</p>
+
+    <div class="callout-physical">
+      <p style="margin-bottom: 0;"><strong>The key idea:</strong> A vector exists independently of any coordinate system. You can describe the same wind using north/south/east/west, or using x/y, or using any rotated axes. The wind doesn't change, only the numbers you use to describe it. This idea, that the thing is real and the description is a choice, carries directly into quantum mechanics.</p>
+    </div>
+
+    <h3 id="math-dot-product">Dot Product (Inner Product)</h3>
+
+    <p>The <strong>dot product</strong> of two vectors answers the question: "How much does vector A point in the same direction as vector B?"</p>
+
+    <p>If A and B point in the same direction, the dot product is large (positive). If they're perpendicular (90 degrees), the dot product is zero. If they point in opposite directions, it's negative.</p>
+
+    <p>Concretely: if you have a wind vector and you want to know how much of that wind is blowing north, you dot the wind vector with the north unit vector. The result is a single number: the northward component of the wind.</p>
+
+    <p>Notation: $\mathbf{A} \cdot \mathbf{B}$ or $\langle A | B \rangle$ (the quantum version). The result is always a <em>scalar</em> (a single number), not a vector.</p>
+
+    <div class="callout-intuition">
+      <p style="margin-bottom: 0;"><strong>Why it matters here:</strong> In Section 1.3, the inner product $\langle +z|\psi\rangle$ asks: "How much of the state $|\psi\rangle$ points in the $|{+z}\rangle$ direction?" The answer is a probability amplitude. Square it to get the probability of measuring spin-up. The inner product is the bridge between the abstract state and the concrete measurement.</p>
+    </div>
+
+    <h3 id="math-basis">Basis and Components</h3>
+
+    <p>A <strong>basis</strong> is a set of reference directions you use to describe vectors. In everyday life, you might use north/east/up. In physics, x/y/z. The choice of basis is up to you; the vector doesn't care.</p>
+
+    <p>Once you pick a basis, any vector can be broken down into <strong>components</strong>: "3 units in the x-direction, 2 units in the y-direction, 1 unit in the z-direction." This is what $E_x$, $E_y$, $E_z$ mean for an electric field, or what $S_x$, $S_y$, $S_z$ mean for spin.</p>
+
+    <p>To extract a component, you <strong>project</strong>: take the dot product with the corresponding basis vector. $E_x = \mathbf{i} \cdot \mathbf{E}$ means "project $\mathbf{E}$ onto the x-direction."</p>
+
+    <div class="callout-physical">
+      <p style="margin-bottom: 0;"><strong>The quantum version:</strong> The states $|{+z}\rangle$ and $|{-z}\rangle$ form a basis, like x and y axes but for spin. Any spin state can be written as a combination: $|\psi\rangle = c_+|{+z}\rangle + c_-|{-z}\rangle$. The amplitudes $c_+$ and $c_-$ are the components. To extract them: $c_+ = \langle +z|\psi\rangle$ (project $|\psi\rangle$ onto the $|{+z}\rangle$ direction). Same idea as $E_x = \mathbf{i} \cdot \mathbf{E}$, just in a different space.</p>
+    </div>
+
+    <p>The basis vectors must be <strong>orthogonal</strong> (perpendicular to each other) and <strong>normalized</strong> (each has length 1). Together: <strong>orthonormal</strong>. This means they don't overlap (each direction is independent) and they're properly scaled. In quantum mechanics, this comes from the experiments: a $|{+z}\rangle$ atom measured in z gives 100% +z and 0% -z, which translates directly to $\langle +z|+z\rangle = 1$ and $\langle -z|+z\rangle = 0$.</p>
+
+    <h3 id="math-complex">Complex Numbers</h3>
+
+    <p>You know real numbers: 1, -3.5, $\pi$, $\sqrt{2}$. They live on a number line.</p>
+
+    <p>A <strong>complex number</strong> adds a second dimension. It has a real part and an imaginary part: $z = a + bi$, where $i$ is defined by the single rule $i^2 = -1$.</p>
+
+    <p>Think of it as a point on a plane instead of a point on a line. The horizontal axis is the real part, the vertical axis is the imaginary part. The number $3 + 4i$ is at position (3, 4) on this plane.</p>
+
+    <p>Three operations you need:</p>
+
+    <h4>Magnitude (absolute value)</h4>
+    <p>The <strong>magnitude</strong> $|z|$ is the distance from the origin to the point. By Pythagoras: $|a + bi| = \sqrt{a^2 + b^2}$. For $3 + 4i$: $|3 + 4i| = \sqrt{9 + 16} = 5$.</p>
+    <p>For a pure imaginary number like $i\sqrt{3}/2$: $|i\sqrt{3}/2| = \sqrt{0 + 3/4} = \sqrt{3}/2$. The $i$ doesn't affect the magnitude.</p>
+
+    <h4>Conjugate</h4>
+    <p>The <strong>conjugate</strong> $z^*$ flips the sign of the imaginary part. If $z = a + bi$, then $z^* = a - bi$. Geometrically, it's a reflection across the real axis.</p>
+    <p>The key property: $z^* \cdot z = |z|^2$. Always real, always non-negative. This is why the Born rule uses $|c|^2 = c^* c$: it guarantees you get a real, non-negative probability.</p>
+
+    <h4>Phase</h4>
+    <p>Two complex numbers can have the same magnitude but point in different directions on the plane. The direction is called the <strong>phase</strong>. The numbers $1$, $i$, $-1$, and $-i$ all have magnitude 1 but phases of 0&deg;, 90&deg;, 180&deg;, and 270&deg;.</p>
+
+    <div class="callout">
+      <p style="margin-bottom: 0;"><strong>Why quantum mechanics needs complex numbers:</strong> Two spin states can have the same probability ($|c|^2$ is the same) but different phase (the direction of $c$ on the complex plane differs). Phase is invisible to single measurements (magnitude is all that matters for probability). But when amplitudes <em>combine</em>, their phases determine whether they reinforce (constructive interference) or cancel (destructive interference). This is exactly what happens in Experiment 4. Real numbers can only be positive or negative (two options for interference). Complex numbers can point in any direction on the plane, giving a richer set of interference patterns, which nature actually uses.</p>
+    </div>
+
+    <h3 id="math-eigenstate">Eigenstates</h3>
+
+    <p>You'll see the words "eigenstate" and "eigenvalue" in quantum mechanics. They sound intimidating but the idea is simple.</p>
+
+    <p>An <strong>eigenstate</strong> of a measurement is a state that gives a <strong>definite, certain result</strong> for that measurement. Not probabilistic. Not a coin flip. A guaranteed outcome.</p>
+
+    <p>$|{+z}\rangle$ is an eigenstate of the $S_z$ measurement. If you measure $S_z$ on this state, you get $+\hbar/2$ with 100% certainty. The value $+\hbar/2$ is the <strong>eigenvalue</strong>: the definite result you're guaranteed to get.</p>
+
+    <p>$|{-z}\rangle$ is the other eigenstate of $S_z$, with eigenvalue $-\hbar/2$.</p>
+
+    <p>Any state that is <em>not</em> an eigenstate gives probabilistic results. The state $|{+x}\rangle$ is not an eigenstate of $S_z$ (it gives 50/50), but it <em>is</em> an eigenstate of $S_x$ (it gives $+\hbar/2$ with certainty in the x-direction).</p>
+
+    <div class="callout-intuition">
+      <p style="margin-bottom: 0;"><strong>The connection to the experiments:</strong> In Experiment 1, the first SGz device <em>prepares</em> the atom in an eigenstate of $S_z$. The second SGz device confirms it: 100%, guaranteed. In Experiment 2, that same eigenstate of $S_z$ is measured in x, but it's <em>not</em> an eigenstate of $S_x$, so you get 50/50. "Eigenstate" just means "a state where this particular question has a definite answer."</p>
+    </div>
+
+    <p>The German word "eigen" means "own" or "characteristic." An eigenstate is the measurement's "own" state: the state it's perfectly adapted to. Every other state is a mix (superposition) of eigenstates, and the measurement gets a probabilistic mix of eigenvalues.</p>
   </section>
 
   <!-- Section 1.1: The Formal Version -->
