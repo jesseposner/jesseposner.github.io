@@ -330,7 +330,11 @@ tailwind.config = {
     <a href="#math-from-scratch" class="nav-link" style="margin-top: 0.75rem;">Before the Math</a>
     <a href="#math-reading-equations" class="nav-link sub">Reading Equations</a>
     <a href="#math-symbols" class="nav-link sub">The Symbol Table</a>
+    <a href="#math-momentum" class="nav-link sub">Momentum</a>
+    <a href="#math-angular-momentum" class="nav-link sub">Angular Momentum</a>
+    <a href="#math-orbital-vs-spin" class="nav-link sub">Orbital vs Spin</a>
     <a href="#math-vectors" class="nav-link sub">Vectors</a>
+    <a href="#math-cross-product" class="nav-link sub">Cross Product</a>
     <a href="#math-dot-product" class="nav-link sub">Dot Product</a>
     <a href="#math-basis" class="nav-link sub">Basis &amp; Components</a>
     <a href="#math-complex" class="nav-link sub">Complex Numbers</a>
@@ -648,6 +652,51 @@ tailwind.config = {
       <li>$c_+$, $c_-$ &mdash; <strong>probability amplitudes</strong>. Complex numbers whose squared magnitudes give probabilities.</li>
     </ul>
 
+    <h3 id="math-momentum">Momentum and Angular Momentum</h3>
+
+    <p>Townsend's opening paragraph assumes you know what angular momentum is. Let's build it up from scratch.</p>
+
+    <h4>Momentum</h4>
+
+    <p><strong>Momentum</strong> is mass times velocity: $\mathbf{p} = m\mathbf{v}$. It captures "how hard something is to stop." A truck at 30 mph has more momentum than a bicycle at 30 mph because it has more mass. A bullet has high momentum despite low mass because it has high velocity.</p>
+
+    <p>Momentum is a vector: it has both magnitude and direction. A ball rolling north has northward momentum.</p>
+
+    <h4 id="math-angular-momentum">Angular Momentum</h4>
+
+    <p><strong>Angular momentum</strong> is the rotational version of momentum. Instead of "how hard is this to stop moving in a straight line," it's "how hard is this to stop spinning."</p>
+
+    <p>A figure skater spinning with arms extended has angular momentum. Pull the arms in, the spin gets faster (angular momentum is conserved, so less spread-out mass means faster rotation). A gyroscope resists being tipped over because it has angular momentum. The Earth has angular momentum from spinning on its axis.</p>
+
+    <p>For a particle orbiting in a circle (like an electron around a nucleus, in the classical picture), the angular momentum is:</p>
+
+    <p>$$\mathbf{L} = \mathbf{r} \times \mathbf{p}$$</p>
+
+    <p>where $\mathbf{r}$ is the position vector (pointing from the center of the orbit to the particle) and $\mathbf{p}$ is the momentum. The $\times$ is a cross product (explained below). But the physical meaning is simple: <strong>how much stuff is rotating, how fast, and around which axis.</strong></p>
+
+    <p>The magnitude of $L$ depends on three things: the mass of the particle, how fast it's moving, and how far it is from the center of rotation. Bigger orbit, or faster speed, or more mass = more angular momentum.</p>
+
+    <div class="callout-physical">
+      <p style="margin-bottom: 0;"><strong>Direction of angular momentum:</strong> Angular momentum is a vector, but what direction does "spinning" point? By convention: curl the fingers of your right hand in the direction of rotation. Your thumb points in the direction of the angular momentum vector. Earth spins counterclockwise when viewed from above the north pole, so its angular momentum vector points toward the north star. This is the <strong>right-hand rule</strong>.</p>
+    </div>
+
+    <h4 id="math-orbital-vs-spin">Orbital vs Spin Angular Momentum</h4>
+
+    <p>This is the distinction Townsend makes in his opening paragraph. The Earth has <em>two</em> kinds of angular momentum:</p>
+
+    <ol>
+      <li><strong>Orbital angular momentum:</strong> from revolving around the Sun. The Earth traces a big circle (orbit), and $\mathbf{L} = \mathbf{r} \times \mathbf{p}$ describes it. This is angular momentum due to motion through space.</li>
+      <li><strong>Spin angular momentum:</strong> from rotating on its own axis. The Earth spins once per day, and this is described by $I\omega$ (moment of inertia times angular velocity). This is angular momentum due to internal rotation.</li>
+    </ol>
+
+    <p>For the Earth, both are "really" the same kind of thing ($\mathbf{L} = \mathbf{r} \times \mathbf{p}$), just applied at different scales. Every tiny piece of the Earth is orbiting the Earth's axis, and you could compute the spin angular momentum by adding up all those little orbital contributions.</p>
+
+    <div class="callout-devastating">
+      <p style="margin-bottom: 0;"><strong>Here's what Townsend is warning you about:</strong> For the electron, spin angular momentum is <em>not</em> a miniature version of orbital angular momentum. The electron isn't a little ball rotating. Its spin doesn't come from pieces of the electron orbiting an internal axis. It's a fundamentally different property that happens to obey the same mathematical rules as angular momentum. It has magnitude, it has a direction, it's conserved, but it doesn't come from any spatial motion. This is the part that has no classical analogy. You have to accept it as an empirical fact: the electron has this property called spin, it behaves like angular momentum in the math, but it's intrinsic, not mechanical.</p>
+    </div>
+
+    <p>The notation: $I$ is <strong>moment of inertia</strong> (how the mass is distributed relative to the rotation axis; more mass far from the axis = harder to spin up = larger $I$). $\omega$ ("omega") is <strong>angular velocity</strong> (how many radians per second the object rotates). $I\omega$ is the magnitude of the spin angular momentum for a classical spinning object. You won't need to compute $I\omega$ for anything in this chapter; Townsend mentions it only to set up the contrast with quantum spin.</p>
+
     <h3 id="math-vectors">Vectors</h3>
 
     <p>A <strong>vector</strong> is a quantity that has both a size (magnitude) and a direction. Contrast with a <strong>scalar</strong>, which is just a number.</p>
@@ -660,6 +709,18 @@ tailwind.config = {
 
     <div class="callout-physical">
       <p style="margin-bottom: 0;"><strong>The key idea:</strong> A vector exists independently of any coordinate system. You can describe the same wind using north/south/east/west, or using x/y, or using any rotated axes. The wind doesn't change, only the numbers you use to describe it. This idea, that the thing is real and the description is a choice, carries directly into quantum mechanics.</p>
+    </div>
+
+    <h3 id="math-cross-product">Cross Product</h3>
+
+    <p>You saw $\mathbf{L} = \mathbf{r} \times \mathbf{p}$ above. The $\times$ is a <strong>cross product</strong>, which is different from ordinary multiplication and different from the dot product.</p>
+
+    <p>The <strong>dot product</strong> of two vectors gives you a <em>number</em> (how much they overlap). The <strong>cross product</strong> gives you a new <em>vector</em> that is perpendicular to both inputs.</p>
+
+    <p>Physically: $\mathbf{r}$ points from the center of the orbit to the particle. $\mathbf{p}$ points in the direction the particle is moving (tangent to the orbit). The cross product $\mathbf{r} \times \mathbf{p}$ produces a vector perpendicular to the plane of the orbit, pointing along the rotation axis. Its magnitude is $|\mathbf{r}||\mathbf{p}|\sin\theta$, where $\theta$ is the angle between $\mathbf{r}$ and $\mathbf{p}$. For a circular orbit, $\mathbf{r}$ and $\mathbf{p}$ are perpendicular ($\theta = 90°$, $\sin 90° = 1$), so $L = r \cdot p = r \cdot mv$.</p>
+
+    <div class="callout-intuition">
+      <p style="margin-bottom: 0;"><strong>You don't need to compute any cross products in this chapter.</strong> It appears only in the definition of orbital angular momentum, and Townsend immediately moves to spin, which doesn't use $\mathbf{r} \times \mathbf{p}$. The concept matters, but the computation doesn't.</p>
     </div>
 
     <h3 id="math-dot-product">Dot Product (Inner Product)</h3>
